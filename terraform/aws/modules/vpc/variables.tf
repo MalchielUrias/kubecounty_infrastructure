@@ -12,3 +12,13 @@ variable "public_subnet_cidr" {
   description = "public ip cidr"
   type = string
 }
+
+variable "name" {
+  description = "name of vpc"
+  type = string
+}
+
+variable "tags" {
+  description = "metadata and tags"
+  type = map(string)
+}

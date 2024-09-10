@@ -5,9 +5,7 @@ resource "aws_vpc" "this" {
   enable_dns_support               = true
   assign_generated_ipv6_cidr_block = var.ipv6_enabled
 
-  tags = {
-    Name = "KubeCounty VPC"
-  }
+  tags = merge(var.tags, { "Name" = "${var.name}-vpc" })
 }
 
 # Create Subnet
@@ -16,17 +14,13 @@ resource "aws_subnet" "public" {
   cidr_block = var.public_subnet_cidr
 
 
-  tags = {
-    Name = "Public Subnet"
-  }
+  tags = merge(var.tags, { "Name" = "${var.name}-pubsubnet" })
 }
 # Create IGW
 resource "aws_internet_gateway" "kubecounty_igw" {
   vpc_id = aws_vpc.this.id
 
-  tags = {
-    Name = "KubeCounty VPC IGW"
-  }
+  tags = merge(var.tags, { "Name" = "${var.name}-igw" })
 }
 
 # Create Route 
@@ -47,9 +41,7 @@ resource "aws_route" "public_internet_gateway_ipv6" {
 resource "aws_route_table" "public" {
   vpc_id = aws_vpc.this.id
 
-  tags = {
-      "Name" = "KubeCounty Public Route"
-  }
+  tags = merge(var.tags, { "Name" = "${var.name }-pubrt" })
 }
 
 # Create Route Table Association
