@@ -1,17 +1,22 @@
 variable "block_public_acls" {
-  type = string
+  type    = bool
+  default = true
 }
 variable "block_public_policy" {
-  type = string
+  type    = bool
+  default = true
 }
 variable "ignore_public_acls" {
-  type = string
+  type    = bool
+  default = true
 }
 variable "restrict_public_buckets" {
-  type = string
+  type    = bool
+  default = true
 }
 variable "policy" {
-  type = string
+  type    = string
+  default = ""
 }
 variable "name" {
   type = string
@@ -19,9 +24,7 @@ variable "name" {
 variable "tags" {
   type = map(string)
 }
-variable "lifecycle_rule" {
-  type = list(string)
-}
 variable "versioning_enabled" {
-  type = bool
+  type    = bool
+  default = true
 }
