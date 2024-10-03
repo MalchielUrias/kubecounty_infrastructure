@@ -1,24 +1,29 @@
 variable "cidr_block" {
   description = "vpc cidr block"
-  type = string
+  type        = string
 }
 
 variable "ipv6_enabled" {
   description = "ipv6 enabled"
-  type = bool
+  type        = bool
 }
 
 variable "public_subnet_cidr" {
   description = "public ip cidr"
-  type = string
+  type        = string
+}
+
+variable "private_subnet_cidr" {
+  description = "public ip cidr"
+  type        = string
 }
 
 variable "name" {
   description = "name of vpc"
-  type = string
+  type        = string
 }
 
 variable "tags" {
   description = "metadata and tags"
-  type = map(string)
+  type        = map(string)
 }
