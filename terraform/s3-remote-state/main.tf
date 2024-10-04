@@ -5,8 +5,8 @@ locals {
   }
 }
 
-module "name" {
+module "tfstate-bucket" {
   source = "../aws/modules/s3"
-  name   = "tfstate"
+  name   = var.name
   tags   = local.tags
 }
