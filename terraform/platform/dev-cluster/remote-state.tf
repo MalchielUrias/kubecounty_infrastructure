@@ -3,8 +3,7 @@ terraform {
   backend "s3" {
     bucket  = "kubecounty-tfstate"
     encrypt = false
-    key     = "platform/terraform.tfstate"
-    # profile = "KubeCounty"
-    region = "eu-west-1"
+    key     = "platform/dev-cluster/terraform.tfstate"
+    region  = "eu-west-1"
   }
 }

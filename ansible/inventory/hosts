@@ -1,0 +1,7 @@
+[workers]
+
+[masters]
+
+[k3s-cluster]
+workers
+masters

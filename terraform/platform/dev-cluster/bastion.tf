@@ -1,3 +1,24 @@
-# Create Bastion in public subnet
 
-# SSH Keys
+
+# Create Bastion Security Group
+module "bastion_sg" {
+  source      = "../../aws/modules/sg"
+  name        = var.bastion_name
+  description = var.bastion_description
+  ingress     = var.bastion_ingress
+  tags        = var.bastion_tags
+  vpc_id      = module.dev_network.vpc_id
+}
+
+# Create Bastion
+module "bastion_ec2" {
+  source        = "../../aws/modules/ec2"
+  ami           = var.ami
+  instance_type = var.bastion_instance_type
+  subnet_id     = module.dev_network.public_subnet_id
+  tags = merge(var.bastion_tags, {
+    "Name" = "BastionServer"
+  })
+  key_name               = module.keypair.key_name
+  vpc_security_group_ids = [module.bastion_sg.sg_id]
+}

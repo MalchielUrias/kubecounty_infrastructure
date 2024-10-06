@@ -12,7 +12,6 @@ terraform {
 }
 
 provider "aws" {
-  profile = "KubeCounty"
   region  = "eu-west-1"
 }
 EOF
@@ -29,7 +28,6 @@ remote_state {
 
     key = "${path_relative_to_include()}/terraform.tfstate"
     region         = "eu-west-1"
-    profile = "KubeCounty"
     encrypt        = false
   }
 }

@@ -6,6 +6,7 @@ variable "cidr_block" {
 variable "ipv6_enabled" {
   description = "ipv6 enabled"
   type        = bool
+  default     = true
 }
 
 variable "public_subnet_cidr" {
