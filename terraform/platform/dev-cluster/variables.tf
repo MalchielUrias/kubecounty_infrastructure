@@ -104,19 +104,41 @@ variable "worker_ingress" {
       "from_port"   = 22,
       "to_port"     = 22,
       "protocol"    = "tcp",
-      "cidr_blocks" = ["0.0.0.0/0"]
+      "security_groups" = [module.bastion_sg.sg_id]
     },
     {
-      "from_port"   = 22,
-      "to_port"     = 10250,
+      "description" = "Allow Kubelet services from master nodes"
+      "from_port"   = 10250,
+      "to_port"     = 10255,
       "protocol"    = "tcp",
+      "security_groups" = [module.master_node_sg.sg_id]
+    },
+    {
+      "description" = "Allow etcd communication from master node"
+      "from_port"   = 2379,
+      "to_port"     = 2380,
+      "protocol"    = "tcp",
+      "security_groups" = [module.master_node_sg.sg_id]
+    },
+    {
+    "description" = "Allow Cilium BPF tunneling (if enabled)"
+    "from_port"   = 8472
+    "to_port"     = 8472
+    "protocol"    = "udp"
+    "security_groups" = [module.master_node_sg.sg_id]
+    },
+    {
+      "description" = "Allow NodePort access (if needed)"
+      "from_port"   = 30000
+      "to_port"     = 32767
+      "protocol"    = "tcp"
       "cidr_blocks" = ["0.0.0.0/0"]
     },
     {
       "from_port"   = 53,
       "to_port"     = 53,
       "protocol"    = "tcp",
-      "cidr_blocks" = ["0.0.0.0/0"]
+      "security_groups" = [module.bastion_sg.sg_id]
     }
   ]
 }
@@ -127,25 +149,34 @@ variable "master_ingress" {
       "from_port"   = 22,
       "to_port"     = 22,
       "protocol"    = "tcp",
-      "cidr_blocks" = ["0.0.0.0/0"]
+      "security_groups" = [module.bastion_sg.sg_id]
     },
     {
-      "from_port"   = 22,
+      "description" = "Allow Kubernetes API access from worker nodes"
+      "from_port"   = 6443,
       "to_port"     = 6443,
       "protocol"    = "tcp",
-      "cidr_blocks" = ["0.0.0.0/0"]
+      "security_groups" = [module.worker_node_sg.sg_id]
     },
     {
-      "from_port"   = 22,
-      "to_port"     = 10250,
+      "description" = "Allow Kubelet services access from worker nodes"
+      "from_port"   = 10250,
+      "to_port"     = 10255,
       "protocol"    = "tcp",
-      "cidr_blocks" = ["0.0.0.0/0"]
+      "security_groups" = [module.worker_node_sg.sg_id]
+    },
+    {
+    "description" = "Allow etcd communication from worker nodes"
+    "from_port"   = 2379
+    "to_port"     = 2380
+    "protocol"    = "tcp"
+    "source_security_group_id" = [module.worker_node_sg.sg_id]
     },
     {
       "from_port"   = 22,
       "to_port"     = 53,
       "protocol"    = "tcp",
-      "cidr_blocks" = ["0.0.0.0/0"]
+      "cidr_blocks" = [module.bastion_sg.sg_id]
     }
   ]
 }
