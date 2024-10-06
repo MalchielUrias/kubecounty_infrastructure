@@ -15,3 +15,11 @@ variable "subnet_id" {
 variable "tags" {
   type = map(string)
 }
+
+variable "vpc_security_group_ids" {
+  type = list(string)
+}
+
+variable "key_name" {
+  type = string
+}

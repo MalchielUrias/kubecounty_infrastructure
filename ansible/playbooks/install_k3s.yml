@@ -1,0 +1,36 @@
+---
+- name: Install K3s master and worker nodes
+  hosts: all
+  become: true
+  tasks:
+    # Task for master node
+    - name: Install K3s master
+      when: "'masters' in group_names"
+      shell: |
+        curl -sfL https://get.k3s.io | sh - --disable-flannel --disable-traefik --disable-metallb
+      tags: master
+
+    # Task to fetch the K3s token from the master node
+    - name: Fetch K3s token from master
+      when: "'master' in group_names"
+      command: cat /var/lib/rancher/k3s/server/node-token
+      register: k3s_token
+      tags: master
+
+    # Task to get the K3s server IP address
+    - name: Get IP address of master node
+      when: "'master' in group_names"
+      command: hostname -I | awk '{print $1}'
+      register: k3s_master_ip
+      tags: master
+
+- name: Install K3s on workers and join them to the master
+  hosts: workers
+  become: yes
+  tasks:
+    # Install K3s on worker nodes
+    - name: Install K3s worker
+      shell: |
+        curl -sfL https://get.k3s.io | K3S_URL=https://{{ hostvars['master-node'].k3s_master_ip.stdout }}:6443 \
+        K3S_TOKEN={{ hostvars['master-node'].k3s_token.stdout }} sh -
+      tags: worker

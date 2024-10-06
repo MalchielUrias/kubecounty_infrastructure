@@ -8,6 +8,6 @@ terraform {
 }
 
 provider "aws" {
-  profile = "KubeCounty"
-  region  = "eu-west-1"
+  # profile = "KubeCounty"
+  region = "eu-west-1"
 }
