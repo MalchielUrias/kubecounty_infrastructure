@@ -5,9 +5,9 @@ module "bastion_sg" {
   source      = "../../aws/modules/sg"
   name        = var.bastion_name
   description = var.bastion_description
-  ingress     = var.bastion_ingress
-  tags        = var.bastion_tags
+  tags        = var.worker_nodes_tags
   vpc_id      = module.dev_network.vpc_id
+  ingress     = var.bastion_ingress
 }
 
 # Create Bastion

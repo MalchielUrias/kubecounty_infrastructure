@@ -1,6 +1,9 @@
 [workers]
+10.0.2.63
+10.0.2.90
 
 [masters]
+10.0.2.244
 
 [k3s-cluster]
 workers

@@ -11,8 +11,9 @@ resource "aws_vpc" "this" {
 # Public !!!
 # Create Subnet
 resource "aws_subnet" "public" {
-  vpc_id     = aws_vpc.this.id
-  cidr_block = var.public_subnet_cidr
+  vpc_id                  = aws_vpc.this.id
+  cidr_block              = var.public_subnet_cidr
+  map_public_ip_on_launch = true
 
 
   tags = merge(var.tags, { "Name" = "${var.name}-pubsubnet" })
