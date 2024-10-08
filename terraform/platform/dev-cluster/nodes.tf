@@ -35,9 +35,56 @@ module "worker_node_sg" {
   source      = "../../aws/modules/sg"
   name        = "${var.name}-worker-node"
   description = var.worker_description
-  ingress     = var.worker_ingress
   tags        = var.worker_nodes_tags
   vpc_id      = module.dev_network.vpc_id
+  ingress = [
+    {
+      "type"        = "ingress"
+      "from_port"   = 22,
+      "to_port"     = 22,
+      "protocol"    = "tcp",
+      "cidr_blocks" = ["10.0.1.0/24"]
+    },
+    {
+      "type"        = "ingress"
+      "description" = "Allow Kubelet services from master nodes"
+      "from_port"   = 10250,
+      "to_port"     = 10255,
+      "protocol"    = "tcp",
+      "cidr_blocks" = ["10.0.2.0/24"]
+    },
+    {
+      "type"        = "ingress"
+      "description" = "Allow etcd communication from master node"
+      "from_port"   = 2379,
+      "to_port"     = 2380,
+      "protocol"    = "tcp",
+      "cidr_blocks" = ["10.0.2.0/24"]
+    },
+    {
+      "type"        = "ingress"
+      "description" = "Allow Cilium BPF tunneling (if enabled)"
+      "from_port"   = 8472
+      "to_port"     = 8472
+      "protocol"    = "udp"
+      "cidr_blocks" = ["10.0.2.0/24"]
+    },
+    {
+      "type"        = "ingress"
+      "description" = "Allow NodePort access (if needed)"
+      "from_port"   = 30000
+      "to_port"     = 32767
+      "protocol"    = "tcp"
+      "cidr_blocks" = ["0.0.0.0/0"]
+    },
+    {
+      "type"        = "ingress"
+      "from_port"   = 53,
+      "to_port"     = 53,
+      "protocol"    = "tcp",
+      "cidr_blocks" = ["10.0.1.0/24"]
+    }
+  ]
 }
 
 
@@ -46,7 +93,46 @@ module "master_node_sg" {
   source      = "../../aws/modules/sg"
   name        = "${var.name}-master-node"
   description = var.master_description
-  ingress     = var.master_ingress
   tags        = var.master_nodes_tags
   vpc_id      = module.dev_network.vpc_id
+  ingress = [
+    {
+      "type"        = "ingress"
+      "from_port"   = 22,
+      "to_port"     = 22,
+      "protocol"    = "tcp",
+      "cidr_blocks" = ["10.0.1.0/24"]
+    },
+    {
+      "type"        = "ingress"
+      "description" = "Allow Kubernetes API access from worker nodes"
+      "from_port"   = 6443,
+      "to_port"     = 6443,
+      "protocol"    = "tcp",
+      "cidr_blocks" = ["10.0.2.0/24"]
+    },
+    {
+      "type"        = "ingress"
+      "description" = "Allow Kubelet services access from worker nodes"
+      "from_port"   = 10250,
+      "to_port"     = 10255,
+      "protocol"    = "tcp",
+      "cidr_blocks" = ["10.0.2.0/24"]
+    },
+    {
+      "type"        = "ingress"
+      "description" = "Allow etcd communication from worker nodes"
+      "from_port"   = 2379
+      "to_port"     = 2380
+      "protocol"    = "tcp"
+      "cidr_blocks" = ["10.0.2.0/24"]
+    },
+    {
+      "type"        = "ingress"
+      "from_port"   = 22,
+      "to_port"     = 53,
+      "protocol"    = "tcp",
+      "cidr_blocks" = ["10.0.1.0/24"]
+    }
+  ]
 }
