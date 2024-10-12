@@ -9,3 +9,7 @@ output "public_ip" {
 output "public_dns" {
   value = aws_instance.this.public_dns
 }
+
+output "primary_network_interface_id" {
+  value = aws_instance.this.primary_network_interface_id
+}

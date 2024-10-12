@@ -1,10 +1,10 @@
 [workers]
-10.0.2.63
-10.0.2.90
+worker1 ansible_host=10.0.2.63
+worker2 ansible_host=10.0.2.90
 
 [masters]
-10.0.2.244
+master1 ansible_host=10.0.2.244
 
-[k3s-cluster]
+[k3s-cluster:children]
 workers
 masters

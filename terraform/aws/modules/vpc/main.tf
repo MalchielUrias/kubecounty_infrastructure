@@ -62,17 +62,17 @@ resource "aws_subnet" "private" {
 }
 
 # Create Route
-resource "aws_route" "private_route" {
-  route_table_id         = aws_route_table.private.id
-  destination_cidr_block = "0.0.0.0/0"
-  gateway_id             = aws_internet_gateway.kubecounty_igw.id # Make this a bastion to save cost
-}
+# resource "aws_route" "private_route" {
+#   route_table_id         = aws_route_table.private.id
+#   destination_cidr_block = "0.0.0.0/0"
+#   network_interface_id   = var.network_interface_id # Make this a bastion network_interface_id to save cost
+# }
 
-resource "aws_route" "private_route_ipv6" {
-  route_table_id              = aws_route_table.private.id
-  destination_ipv6_cidr_block = "::/0"
-  gateway_id                  = aws_internet_gateway.kubecounty_igw.id # Make this point to a bastion
-}
+# resource "aws_route" "private_route_ipv6" {
+#   route_table_id              = aws_route_table.private.id
+#   destination_ipv6_cidr_block = "::/0"
+#   network_interface_id        = var.network_interface_id # Make this point to a bastion nenetwork_interface_id
+# }
 
 
 # Create Route Table

@@ -37,7 +37,7 @@ module "worker_node_sg" {
   description = var.worker_description
   tags        = var.worker_nodes_tags
   vpc_id      = module.dev_network.vpc_id
-  ingress = [
+  rules = [
     {
       "type"        = "ingress"
       "from_port"   = 22,
@@ -83,7 +83,14 @@ module "worker_node_sg" {
       "to_port"     = 53,
       "protocol"    = "tcp",
       "cidr_blocks" = ["10.0.1.0/24"]
-    }
+    },
+    {
+      "type"        = "egress"
+      "from_port"   = 0,
+      "to_port"     = 0,
+      "protocol"    = "-1",
+      "cidr_blocks" = ["0.0.0.0/0"]
+    },
   ]
 }
 
@@ -95,7 +102,7 @@ module "master_node_sg" {
   description = var.master_description
   tags        = var.master_nodes_tags
   vpc_id      = module.dev_network.vpc_id
-  ingress = [
+  rules = [
     {
       "type"        = "ingress"
       "from_port"   = 22,
@@ -133,6 +140,13 @@ module "master_node_sg" {
       "to_port"     = 53,
       "protocol"    = "tcp",
       "cidr_blocks" = ["10.0.1.0/24"]
-    }
+    },
+    {
+      "type"        = "egress"
+      "from_port"   = 0,
+      "to_port"     = 0,
+      "protocol"    = "-1",
+      "cidr_blocks" = ["0.0.0.0/0"]
+    },
   ]
 }

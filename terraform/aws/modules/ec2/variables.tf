@@ -23,3 +23,12 @@ variable "vpc_security_group_ids" {
 variable "key_name" {
   type = string
 }
+
+variable "network_interface" {
+  type = map(object({
+    device_index         = number
+    network_interface_id = string
+    }
+  ))
+  default = {}
+}
