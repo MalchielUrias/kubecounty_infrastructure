@@ -47,6 +47,14 @@ module "worker_node_sg" {
     },
     {
       "type"        = "ingress"
+      "description" = "Allow Kubernetes API access from master nodes"
+      "from_port"   = 6443,
+      "to_port"     = 6443,
+      "protocol"    = "tcp",
+      "cidr_blocks" = ["10.0.1.0/24"]
+    },
+    {
+      "type"        = "ingress"
       "description" = "Allow Kubelet services from master nodes"
       "from_port"   = 10250,
       "to_port"     = 10255,
