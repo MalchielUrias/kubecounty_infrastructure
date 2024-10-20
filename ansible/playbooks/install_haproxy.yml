@@ -3,17 +3,17 @@
   hosts: masters
   become: yes
   tasks:
+    - name: Ensure haproxy group exists
+      group:
+        name: haproxy
+        state: present
+
     - name: Ensure haproxy user and group exist
       user:
         name: haproxy
         group: haproxy
         shell: /bin/false
         system: yes
-        state: present
-
-    - name: Ensure haproxy group exists
-      group:
-        name: haproxy
         state: present
 
     - name: Install HAProxy
