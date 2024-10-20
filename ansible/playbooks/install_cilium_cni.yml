@@ -23,10 +23,20 @@
         cp /etc/rancher/k3s/k3s.yaml ~/.kube/config
       tags: cilium
 
+    - name: Get k8sServiceHost
+      shell: "kubectl get endpoints kubernetes -o jsonpath='{.subsets[0].addresses[0].ip}'"
+      register: k8s_service_host
+      changed_when: false
+
+    - name: Get k8sServicePort
+      shell: "kubectl get endpoints kubernetes -o jsonpath='{.subsets[0].ports[0].port}'"
+      register: k8s_service_port
+      changed_when: false
+
     # Install Cilium as the CNI
     - name: Install Cilium CNI
       shell: |
-        cilium install
+        cilium install --wait --namespace kube-system --set ipam.mode=cluster-pool  --set ipam.operator.clusterPoolIPv4PodCIDRList="10.45.0.0/16"  --set k8sServiceHost={{ k8s_service_host.stdout }}  --set k8sServicePort={{ k8s_service_port.stdout }} --set kubeProxyReplacement=true
       tags: cilium
 
     # Verify Cilium installation
@@ -40,26 +50,4 @@
     - name: Output Cilium installation status
       debug:
         msg: "{{ cilium_status.stdout }}"
-      tags: cilium
-
-    # Enable Hubble
-    - name: Enable Hubble
-      shell: |
-        cilium hubble enable
-      when: "'Cilium is running' in cilium_status.stdout"
-      tags: cilium
-
-    # Verify Hubble installation
-    - name: Verify Hubble installation
-      shell: |
-        cilium hubble status
-      register: hubble_status
-      when: "'Cilium is running' in cilium_status.stdout"
-      tags: cilium
-
-    # Output the result of Hubble status
-    - name: Output Hubble installation status
-      debug:
-        msg: "{{ hubble_status.stdout }}"
-      when: "'Cilium is running' in cilium_status.stdout"
       tags: cilium

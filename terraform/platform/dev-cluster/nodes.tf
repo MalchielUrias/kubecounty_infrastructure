@@ -47,14 +47,6 @@ module "worker_node_sg" {
     },
     {
       "type"        = "ingress"
-      "description" = "Allow Kubernetes API access from master nodes"
-      "from_port"   = 6443,
-      "to_port"     = 6443,
-      "protocol"    = "tcp",
-      "cidr_blocks" = ["10.0.1.0/24"]
-    },
-    {
-      "type"        = "ingress"
       "description" = "Allow Kubelet services from master nodes"
       "from_port"   = 10250,
       "to_port"     = 10255,
@@ -66,6 +58,14 @@ module "worker_node_sg" {
       "description" = "Allow etcd communication from master node"
       "from_port"   = 2379,
       "to_port"     = 2380,
+      "protocol"    = "tcp",
+      "cidr_blocks" = ["10.0.2.0/24"]
+    },
+    {
+      "type"        = "ingress"
+      "description" = "Allow etcd communication from master node"
+      "from_port"   = 8080,
+      "to_port"     = 8080,
       "protocol"    = "tcp",
       "cidr_blocks" = ["10.0.2.0/24"]
     },
@@ -124,7 +124,7 @@ module "master_node_sg" {
       "from_port"   = 6443,
       "to_port"     = 6443,
       "protocol"    = "tcp",
-      "cidr_blocks" = ["10.0.2.0/24"]
+      "cidr_blocks" = ["10.0.2.0/24", "10.0.1.0/24"]
     },
     {
       "type"        = "ingress"
@@ -140,6 +140,14 @@ module "master_node_sg" {
       "from_port"   = 2379
       "to_port"     = 2380
       "protocol"    = "tcp"
+      "cidr_blocks" = ["10.0.2.0/24"]
+    },
+    {
+      "type"        = "ingress"
+      "description" = "Allow etcd communication from master node"
+      "from_port"   = 8080,
+      "to_port"     = 8080,
+      "protocol"    = "tcp",
       "cidr_blocks" = ["10.0.2.0/24"]
     },
     {

@@ -7,7 +7,7 @@
     - name: Install K3s master
       when: "'masters' in group_names"
       shell: |
-        curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="--flannel-backend=none --disable traefik --disable servicelb --cluster-init --datastore-endpoint='etcd'" sh -
+        curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="--flannel-backend=none --disable traefik --disable servicelb --cluster-init --disable-network-policy --disable-kube-proxy" sh -
       tags: masters
 
     # Task to fetch the K3s token from the master node

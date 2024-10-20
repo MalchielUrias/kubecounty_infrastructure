@@ -87,11 +87,11 @@ variable "bastion_tags" {
 }
 
 variable "worker_type" {
-  default = "t3.small"
+  default = "t3.medium"
 }
 
 variable "master_type" {
-  default = "t3.micro"
+  default = "t3.medium"
 }
 
 variable "worker_nodes_tags" {
