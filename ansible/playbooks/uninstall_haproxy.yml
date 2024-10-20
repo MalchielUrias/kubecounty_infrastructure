@@ -22,7 +22,6 @@
       ansible.builtin.file:
         path: /etc/haproxy
         state: absent
-        recurse: yes
       tags: haproxy_uninstall
 
     # Remove HAProxy log files
