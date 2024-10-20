@@ -9,22 +9,17 @@
         size: 2048
         state: present
 
-    - name: Create a certificate signing request (CSR)
-      community.crypto.openssl_csr:
-        path: /etc/ssl/private/kubecert.csr
+    - name: Create certificate signing request (CSR) for self-signed certificate
+      community.crypto.openssl_csr_pipe:
         privatekey_path: /etc/ssl/private/kubecert.key
         common_name: kubecounty.com
         organization_name: "KubeCounty"
         country_name: "NG"
+      register: csr
 
-    - name: Generate a self-signed certificate
+    - name: Create self-signed certificate from CSR
       community.crypto.x509_certificate:
-        path: /etc/ssl/certs/kubecert.crt
+        path: /etc/ssl/certs/kubecert.pem
+        csr_content: "{{ csr.csr }}"
         privatekey_path: /etc/ssl/private/kubecert.key
-        csr_path: /etc/ssl/private/kubecert.csr
         provider: selfsigned
-        selfsigned_not_before: "+0s"
-        selfsigned_not_after: "+365d"
-
-    - name: Create PEM file for HAProxy
-      shell: cat /etc/ssl/private/kubecert.key /etc/ssl/certs/kubecert.crt > /etc/ssl/certs/kubecert.pem
