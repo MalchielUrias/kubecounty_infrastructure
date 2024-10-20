@@ -1,6 +1,6 @@
 ---
 - name: Configure HAProxy on Bastion Host
-  hosts: masters
+  hosts: localhost
   become: yes
   tasks:
     - name: Ensure haproxy group exists
