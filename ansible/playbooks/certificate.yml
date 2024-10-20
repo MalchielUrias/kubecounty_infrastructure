@@ -25,5 +25,5 @@
         provider: selfsigned
         days: 365
 
-    - name: Combine key and cert into PEM file for HAProxy
+    - name: Create PEM file for HAProxy
       command: cat /etc/ssl/private/kubecert.key /etc/ssl/certs/kubecert.crt > /etc/ssl/certs/kubecert.pem
