@@ -21,6 +21,6 @@ jobs:
         with:
           host: 34.251.79.150
           username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.KEY }}
+          key: ${{ secrets.BASTION_KEY }}
           source: "ansible/"
-          target: "~/ansible"
+          target: "~/ansible/ansible"
