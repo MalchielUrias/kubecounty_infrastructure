@@ -1,0 +1,23 @@
+---
+- name: Install Cilium as the CNI on the cluster
+  hosts: masters
+  become: yes
+  tasks:
+    # Enable Hubble
+    - name: Enable Hubble
+      shell: |
+        cilium hubble enable
+      tags: hubble
+
+    # Verify Hubble installation
+    - name: Verify Hubble installation
+      shell: |
+        cilium hubble status
+      register: hubble_status
+      tags: hubble
+
+    # Output the result of Hubble status
+    - name: Output Hubble installation status
+      debug:
+        msg: "{{ hubble_status.stdout }}"
+      tags: hubble
