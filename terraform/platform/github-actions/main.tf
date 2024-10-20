@@ -25,7 +25,7 @@ data "aws_iam_policy_document" "ec2" {
   statement {
     effect = "Allow"
     actions = [
-      "ecr:*",
+      "ec2:*",
     ]
     resources = [module.master_node.arn]
   }
