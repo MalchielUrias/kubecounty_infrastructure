@@ -23,7 +23,8 @@
         privatekey_path: /etc/ssl/private/kubecert.key
         csr_path: /etc/ssl/private/kubecert.csr
         provider: selfsigned
-        days: 365
+        selfsigned_not_before: "now"
+        selfsigned_not_after: "+365d"
 
     - name: Create PEM file for HAProxy
       command: cat /etc/ssl/private/kubecert.key /etc/ssl/certs/kubecert.crt > /etc/ssl/certs/kubecert.pem
