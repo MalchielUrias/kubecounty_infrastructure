@@ -27,4 +27,4 @@
         selfsigned_not_after: "+365d"
 
     - name: Create PEM file for HAProxy
-      command: cat /etc/ssl/private/kubecert.key /etc/ssl/certs/kubecert.crt > /etc/ssl/certs/kubecert.pem
+      shell: cat /etc/ssl/private/kubecert.key /etc/ssl/certs/kubecert.crt > /etc/ssl/certs/kubecert.pem
