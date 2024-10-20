@@ -26,6 +26,6 @@ backend k8s-api-backend
     mode tcp
     option tcp-check
     balance roundrobin
-    {% for host in groups['k3s-cluster'] %}
+    {% for host in groups['masters'] %}
     server {{ host }} {{ hostvars[host]['ansible_host'] }}:6443 check
     {% endfor %}
