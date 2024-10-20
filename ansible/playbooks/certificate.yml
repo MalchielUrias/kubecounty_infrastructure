@@ -18,7 +18,7 @@
         country_name: "NG"
 
     - name: Generate a self-signed certificate
-      community.crypto.openssl_certificate:
+      community.crypto.x509_certificate:
         path: /etc/ssl/certs/kubecert.crt
         privatekey_path: /etc/ssl/private/kubecert.key
         csr_path: /etc/ssl/private/kubecert.csr
