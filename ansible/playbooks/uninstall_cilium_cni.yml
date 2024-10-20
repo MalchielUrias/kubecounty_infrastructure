@@ -1,0 +1,25 @@
+---
+- name: Uninstall Cilium from Kubernetes cluster
+  hosts: masters
+  become: yes
+  tasks:
+    - name: Copy Kube Config to Standard KubeConfig file
+      shell: |
+        cp /etc/rancher/k3s/k3s.yaml ~/.kube/config
+
+    - name: Run cilium-cli uninstall (if cilium-cli was used)
+      shell: "cilium uninstall"
+
+    - name: Ensure no Cilium pods are running
+      shell: "kubectl delete pod -l k8s-app=cilium -n kube-system --force --grace-period=0"
+      ignore_errors: yes
+
+    - name: Delete remaining Cilium CRDs
+      shell: |
+        kubectl delete crd ciliumendpoints.cilium.io \
+                          ciliumnodes.cilium.io \
+                          ciliumidentities.cilium.io \
+                          ciliumnetworkpolicies.cilium.io \
+                          ciliumclusterwidenetworkpolicies.cilium.io \
+                          ciliumexternalworkloads.cilium.io
+      ignore_errors: yes

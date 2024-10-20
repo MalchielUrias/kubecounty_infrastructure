@@ -37,7 +37,7 @@ module "worker_node_sg" {
   description = var.worker_description
   tags        = var.worker_nodes_tags
   vpc_id      = module.dev_network.vpc_id
-  ingress = [
+  rules = [
     {
       "type"        = "ingress"
       "from_port"   = 22,
@@ -63,6 +63,14 @@ module "worker_node_sg" {
     },
     {
       "type"        = "ingress"
+      "description" = "Allow etcd communication from master node"
+      "from_port"   = 8080,
+      "to_port"     = 8080,
+      "protocol"    = "tcp",
+      "cidr_blocks" = ["10.0.2.0/24"]
+    },
+    {
+      "type"        = "ingress"
       "description" = "Allow Cilium BPF tunneling (if enabled)"
       "from_port"   = 8472
       "to_port"     = 8472
@@ -83,7 +91,14 @@ module "worker_node_sg" {
       "to_port"     = 53,
       "protocol"    = "tcp",
       "cidr_blocks" = ["10.0.1.0/24"]
-    }
+    },
+    {
+      "type"        = "egress"
+      "from_port"   = 0,
+      "to_port"     = 0,
+      "protocol"    = "-1",
+      "cidr_blocks" = ["0.0.0.0/0"]
+    },
   ]
 }
 
@@ -95,7 +110,7 @@ module "master_node_sg" {
   description = var.master_description
   tags        = var.master_nodes_tags
   vpc_id      = module.dev_network.vpc_id
-  ingress = [
+  rules = [
     {
       "type"        = "ingress"
       "from_port"   = 22,
@@ -109,7 +124,7 @@ module "master_node_sg" {
       "from_port"   = 6443,
       "to_port"     = 6443,
       "protocol"    = "tcp",
-      "cidr_blocks" = ["10.0.2.0/24"]
+      "cidr_blocks" = ["10.0.2.0/24", "10.0.1.0/24"]
     },
     {
       "type"        = "ingress"
@@ -129,10 +144,25 @@ module "master_node_sg" {
     },
     {
       "type"        = "ingress"
+      "description" = "Allow etcd communication from master node"
+      "from_port"   = 8080,
+      "to_port"     = 8080,
+      "protocol"    = "tcp",
+      "cidr_blocks" = ["10.0.2.0/24"]
+    },
+    {
+      "type"        = "ingress"
       "from_port"   = 22,
       "to_port"     = 53,
       "protocol"    = "tcp",
       "cidr_blocks" = ["10.0.1.0/24"]
-    }
+    },
+    {
+      "type"        = "egress"
+      "from_port"   = 0,
+      "to_port"     = 0,
+      "protocol"    = "-1",
+      "cidr_blocks" = ["0.0.0.0/0"]
+    },
   ]
 }

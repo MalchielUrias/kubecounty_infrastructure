@@ -1,10 +1,13 @@
 [workers]
-10.0.2.63
-10.0.2.90
+worker1 ansible_host=10.0.2.76
+worker2 ansible_host=10.0.2.155
 
 [masters]
-10.0.2.244
+master1 ansible_host=10.0.2.124 k3s_token=placeholder
 
-[k3s-cluster]
+[k3s-cluster:children]
 workers
 masters
+
+[k3s-cluster:vars]
+k3sversion="v1.31.1+k3s1"

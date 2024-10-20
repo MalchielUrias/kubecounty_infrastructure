@@ -1,0 +1,26 @@
+name: Deploy to Bastion EC2
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "ansible/**"
+
+jobs:
+  # Deploy files to bastion
+  deploy_files:
+    name: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Repository Checkout
+        uses: actions/checkout@v3
+
+      - name: Copy files to ec2
+        uses: appleboy/scp-action@master
+        with:
+          host: 34.251.79.150
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          source: "ansible/"
+          target: "~/ansible"

@@ -28,3 +28,8 @@ variable "tags" {
   description = "metadata and tags"
   type        = map(string)
 }
+
+variable "network_interface_id" {
+  description = "network interface id"
+  type        = string
+}

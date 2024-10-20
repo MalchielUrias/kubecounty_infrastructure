@@ -17,3 +17,11 @@ output "private_subnet_id" {
 output "private_subnet_ipv6_cidr" {
   value = aws_subnet.private.ipv6_cidr_block
 }
+
+output "private_rt_id" {
+  value = aws_route_table.private.id
+}
+
+output "public_rt_id" {
+  value = aws_route_table.public.id
+}

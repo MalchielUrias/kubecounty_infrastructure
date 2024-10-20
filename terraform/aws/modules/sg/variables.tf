@@ -14,7 +14,7 @@ variable "tags" {
   type = map(string)
 }
 
-variable "ingress" {
+variable "rules" {
   type = list(object(
     {
       type        = string

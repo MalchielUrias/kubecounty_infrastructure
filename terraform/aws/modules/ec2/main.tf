@@ -8,5 +8,14 @@ resource "aws_instance" "this" {
 
   key_name = var.key_name
 
+  # dynamic "network_interface" {
+  #   for_each = var.network_interface
+  #   content {
+  #     device_index         = lookup(network_interface.value, "device_index", 0)
+  #     network_interface_id = lookup(network_interface.value, "network_interface_id", "")
+  #   }
+  # }
+
+
   tags = var.tags
 }
