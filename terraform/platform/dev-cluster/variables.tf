@@ -57,12 +57,19 @@ variable "bastion_ingress" {
       "cidr_blocks" = ["0.0.0.0/0"]
     },
     {
+      "type"        = "ingress"
+      "from_port"   = 443,
+      "to_port"     = 443,
+      "protocol"    = "tcp",
+      "cidr_blocks" = ["0.0.0.0/0"]
+    },
+    {
       "type"        = "egress"
       "from_port"   = 0,
       "to_port"     = 0,
       "protocol"    = "-1",
       "cidr_blocks" = ["0.0.0.0/0"]
-    },
+    }
   ]
 }
 
