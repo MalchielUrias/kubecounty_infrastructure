@@ -17,7 +17,7 @@ defaults
     timeout server  100000ms
 
 frontend k8s-api
-    bind *:443 ssl crt /etc/ssl/certs/mydomain.pem
+    bind *:443 ssl crt /etc/ssl/certs/kubecert.pem
     mode tcp
     option tcplog
     default_backend k8s-api-backend
