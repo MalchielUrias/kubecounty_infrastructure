@@ -9,6 +9,14 @@
         size: 2048
         state: present
 
+    - name: Check if the private key was created
+      stat:
+        path: /etc/ssl/private/kubecert.key
+      register: private_key_stat
+
+    - debug:
+        msg: "Private key exists: {{ private_key_stat.stat.exists }}"
+
     - name: Create certificate signing request (CSR) for self-signed certificate
       community.crypto.openssl_csr_pipe:
         privatekey_path: /etc/ssl/private/kubecert.key
@@ -23,3 +31,11 @@
         csr_content: "{{ csr.csr }}"
         privatekey_path: /etc/ssl/private/kubecert.key
         provider: selfsigned
+
+    - name: Check if the certificate was created
+      stat:
+        path: /etc/ssl/certs/kubecert.pem
+      register: cert_stat
+
+    - debug:
+        msg: "Certificate exists: {{ cert_stat.stat.exists }}"
