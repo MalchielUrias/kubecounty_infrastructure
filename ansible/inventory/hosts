@@ -1,9 +1,9 @@
 [workers]
-worker1 ansible_host=10.0.2.76
-worker2 ansible_host=10.0.2.155
+worker1 ansible_host=10.0.2.173
+worker2 ansible_host=10.0.2.128
 
 [masters]
-master1 ansible_host=10.0.2.124 k3s_token=placeholder
+master1 ansible_host=10.0.2.13 k3s_token=placeholder
 
 [k3s-cluster:children]
 workers
@@ -11,3 +11,4 @@ masters
 
 [k3s-cluster:vars]
 k3sversion="v1.31.1+k3s1"
+ansible_ssh_common_args='-o StrictHostKeyChecking=no'
