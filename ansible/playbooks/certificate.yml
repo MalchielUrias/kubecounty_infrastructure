@@ -1,6 +1,6 @@
 ---
 - name: Create and save a self-signed SSL certificate
-  hosts: all
+  hosts: localhost
   become: true
   tasks:
     - name: Create a private key
