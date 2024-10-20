@@ -1,0 +1,29 @@
+---
+- name: Create and save a self-signed SSL certificate
+  hosts: all
+  become: true
+  tasks:
+    - name: Create a private key
+      community.crypto.openssl_privatekey:
+        path: /etc/ssl/private/kubecert.key
+        size: 2048
+        state: present
+
+    - name: Create a certificate signing request (CSR)
+      community.crypto.openssl_csr:
+        path: /etc/ssl/private/kubecert.csr
+        privatekey_path: /etc/ssl/private/kubecert.key
+        common_name: kubecounty.com
+        organization_name: "KubeCounty"
+        country_name: "NG"
+
+    - name: Generate a self-signed certificate
+      community.crypto.openssl_certificate:
+        path: /etc/ssl/certs/kubecert.crt
+        privatekey_path: /etc/ssl/private/kubecert.key
+        csr_path: /etc/ssl/private/kubecert.csr
+        provider: selfsigned
+        days: 365
+
+    - name: Combine key and cert into PEM file for HAProxy
+      command: cat /etc/ssl/private/kubecert.key /etc/ssl/certs/kubecert.crt > /etc/ssl/certs/kubecert.pem
