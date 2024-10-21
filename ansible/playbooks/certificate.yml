@@ -5,13 +5,13 @@
   tasks:
     - name: Create a private key
       community.crypto.openssl_privatekey:
-        path: /etc/ssl/private/kubecert.key
+        path: /keys/kubecert.key
         size: 2048
         state: present
 
     - name: Check if the private key was created
       stat:
-        path: /etc/ssl/private/kubecert.key
+        path: /keys/kubecert.key
       register: private_key_stat
 
     - debug:
@@ -19,7 +19,7 @@
 
     - name: Create certificate signing request (CSR) for self-signed certificate
       community.crypto.openssl_csr_pipe:
-        privatekey_path: /etc/ssl/private/kubecert.key
+        privatekey_path: /keys/kubecert.key
         common_name: kubecounty.com
         organization_name: "KubeCounty"
         country_name: "NG"
@@ -27,14 +27,14 @@
 
     - name: Create self-signed certificate from CSR
       community.crypto.x509_certificate:
-        path: /etc/ssl/certs/kubecert.pem
+        path: /keys/kubecert.pem
         csr_content: "{{ csr.csr }}"
         privatekey_path: /etc/ssl/private/kubecert.key
         provider: selfsigned
 
     - name: Check if the certificate was created
       stat:
-        path: /etc/ssl/certs/kubecert.pem
+        path: /keys/kubecert.pem
       register: cert_stat
 
     - debug:
@@ -42,11 +42,11 @@
 
     - name: Combine PEM file for HAProxy
       become: true
-      shell: cat /etc/ssl/private/kubecert.pem /etc/ssl/certs/kubecert.key > /etc/ssl/certs/fullchainkubecert.pem
+      shell: cat /keys/kubecert.pem /keys/kubecert.key > /keys/fullchainkubecert.pem
 
     - name: Check if the certificate was created
       stat:
-        path: /etc/ssl/certs/kubecert.pem
+        path: /keys/kubecert.pem
       register: pemcert_stat
 
     - debug:
