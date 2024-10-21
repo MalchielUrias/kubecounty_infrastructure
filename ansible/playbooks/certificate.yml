@@ -41,6 +41,7 @@
         msg: "Certificate exists: {{ cert_stat.stat.exists }}"
 
     - name: Combine PEM file for HAProxy
+      become: true
       shell: cat /etc/ssl/private/kubecert.pem /etc/ssl/certs/kubecert.key > /etc/ssl/certs/fullchainkubecert.pem
 
     - name: Check if the certificate was created
