@@ -49,4 +49,4 @@
       register: pemcert_stat
 
     - debug:
-        msg: "Certificate exists: {{ pemcert_stat.stat.exists }}"
+        msg: "Full Chain Certificate exists: {{ pemcert_stat.stat.exists }}"
