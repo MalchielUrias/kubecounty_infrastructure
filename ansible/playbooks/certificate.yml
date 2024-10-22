@@ -31,7 +31,8 @@
         msg: "Private key exists: {{ private_key_stat.stat.exists }}"
 
     - name: Create certificate signing request (CSR) for self-signed certificate
-      community.crypto.openssl_csr_pipe:
+      community.crypto.openssl_csr:
+        path: "{{ keys_dir }}/{{ cert_name }}.csr"
         privatekey_path: "{{ keys_dir }}/{{ cert_name }}.key"
         common_name: "{{ domain_name }}"
         organization_name: "KubeCounty"
