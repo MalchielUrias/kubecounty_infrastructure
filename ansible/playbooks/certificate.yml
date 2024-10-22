@@ -2,16 +2,29 @@
 - name: Create and save a self-signed SSL certificate
   hosts: localhost
   become: true
+  vars:
+    keys_dir: "../keys"
+    cert_name: "kubecert"
+    domain_name: "kubecounty.com"
+
   tasks:
+    # Ensure keys directory exists
+    - name: Ensure keys directory exists
+      file:
+        path: "{{ keys_dir }}"
+        state: directory
+        mode: "0755"
+
     - name: Create a private key
       community.crypto.openssl_privatekey:
-        path: ../keys/kubecert.key
+        path: "{{ keys_dir }}/{{ cert_name }}.key"
         size: 2048
         state: present
+        mode: "0600" # Added secure permissions
 
     - name: Check if the private key was created
       stat:
-        path: ../keys/kubecert.key
+        path: "{{ keys_dir }}/{{ cert_name }}.key"
       register: private_key_stat
 
     - debug:
@@ -19,35 +32,70 @@
 
     - name: Create certificate signing request (CSR) for self-signed certificate
       community.crypto.openssl_csr_pipe:
-        privatekey_path: ../keys/kubecert.key
-        common_name: kubecounty.com
+        privatekey_path: "{{ keys_dir }}/{{ cert_name }}.key"
+        common_name: "{{ domain_name }}"
         organization_name: "KubeCounty"
         country_name: "NG"
+        basic_constraints:
+          - "CA:FALSE"
+        basic_constraints_critical: yes
+        key_usage:
+          - digitalSignature
+          - keyEncipherment
+        extended_key_usage:
+          - serverAuth
       register: csr
 
     - name: Create self-signed certificate from CSR
       community.crypto.x509_certificate:
-        path: ../keys/kubecert.pem
+        path: "{{ keys_dir }}/{{ cert_name }}.pem"
         csr_content: "{{ csr.csr }}"
-        privatekey_path: /etc/ssl/private/kubecert.key
+        privatekey_path: "{{ keys_dir }}/{{ cert_name }}.key" # Fixed path inconsistency
         provider: selfsigned
+        selfsigned_not_after: "+365d" # Added expiry
 
     - name: Check if the certificate was created
       stat:
-        path: ../keys/kubecert.pem
+        path: "{{ keys_dir }}/{{ cert_name }}.pem"
       register: cert_stat
 
     - debug:
         msg: "Certificate exists: {{ cert_stat.stat.exists }}"
 
-    - name: Combine PEM file for HAProxy
-      become: true
-      shell: cat ../keys/kubecert.pem ../keys/kubecert.key > /etc/ssl/certs/fullchainkubecert.pem
+    # Ensure target directory exists
+    - name: Ensure /etc/ssl/certs directory exists
+      file:
+        path: /etc/ssl/certs
+        state: directory
 
-    - name: Check if the certificate was created
+    # Combine files in correct order (key first, then cert)
+    - name: Combine PEM file for HAProxy
+      shell: |
+        cat "{{ keys_dir }}/{{ cert_name }}.key" \
+            "{{ keys_dir }}/{{ cert_name }}.pem" \
+            > "/etc/ssl/certs/fullchain{{ cert_name }}.pem"
+      args:
+        creates: "/etc/ssl/certs/fullchain{{ cert_name }}.pem"
+
+    # Set proper permissions on combined file
+    - name: Set proper permissions on combined PEM file
+      file:
+        path: "/etc/ssl/certs/fullchain{{ cert_name }}.pem"
+        mode: "0600"
+        owner: haproxy # Assuming HAProxy user exists
+        group: haproxy
+
+    - name: Verify combined PEM file exists
       stat:
-        path: ../keys/kubecert.pem
-      register: pemcert_stat
+        path: "/etc/ssl/certs/fullchain{{ cert_name }}.pem"
+      register: fullchain_stat
 
     - debug:
-        msg: "Full Chain Certificate exists: {{ pemcert_stat.stat.exists }}"
+        msg: "Full Chain Certificate exists: {{ fullchain_stat.stat.exists }}"
+
+    # Verify the PEM file is valid
+    - name: Verify PEM file format
+      shell: |
+        openssl pkey -in "/etc/ssl/certs/fullchain{{ cert_name }}.pem" -noout &&
+        openssl x509 -in "/etc/ssl/certs/fullchain{{ cert_name }}.pem" -noout
+      changed_when: false
