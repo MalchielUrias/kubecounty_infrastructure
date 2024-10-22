@@ -45,12 +45,11 @@
           - keyEncipherment
         extended_key_usage:
           - serverAuth
-      register: csr
 
     - name: Create self-signed certificate from CSR
       community.crypto.x509_certificate:
         path: "{{ keys_dir }}/{{ cert_name }}.pem"
-        csr_content: "{{ csr.csr }}"
+        csr_path: "{{ keys_dir }}/{{ cert_name }}.csr"
         privatekey_path: "{{ keys_dir }}/{{ cert_name }}.key" # Fixed path inconsistency
         provider: selfsigned
         selfsigned_not_after: "+365d" # Added expiry
