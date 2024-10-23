@@ -4,6 +4,7 @@
   become: true
   vars:
     k3s_domain: "k8s.kubecounty.com"
+    backup_dir: "/var/lib/rancher/k3s/server/tls_backup"
 
   tasks:
     - name: Update k3s service configuration
@@ -11,6 +12,19 @@
         src: ../jinja/k3s.service.j2
         dest: /etc/systemd/system/k3s.service
       register: k3s_service_config
+
+    - name: Create backup directory if not exists
+      file:
+        path: "{{ backup_dir }}"
+        state: directory
+        mode: "0755"
+
+    - name: Backup existing certificates
+      copy:
+        src: /var/lib/rancher/k3s/server/tls/
+        dest: "{{ backup_dir }}"
+        remote_src: yes
+      when: k3s_service_config.changed
 
     - name: Remove existing certificates
       file:
