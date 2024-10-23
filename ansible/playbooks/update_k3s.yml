@@ -1,6 +1,6 @@
 # This is to upgrade the k3s service tls to accept kubecounty domain name as a tls san
 ---
-- hosts: all
+- hosts: masters
   become: true
   vars:
     k3s_domain: "k8s.kubecounty.com"
