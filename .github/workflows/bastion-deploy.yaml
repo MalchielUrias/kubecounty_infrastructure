@@ -8,7 +8,7 @@ on:
       - "ansible/**"
 
 jobs:
-  # Deploy files to bastion
+  # Deploy files to bastion ec2
   deploy_files:
     name: deploy
     runs-on: ubuntu-latest
