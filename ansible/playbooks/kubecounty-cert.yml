@@ -15,7 +15,7 @@
         -d k8s.kubecounty.com \
         --non-interactive \
         --agree-tos \
-        --email malchieluriasbusiness.com
+        --email malchieluriasbusiness@gmail.com
       args:
         creates: /etc/letsencrypt/live/k8s.kubecounty.com
 
