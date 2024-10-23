@@ -1,9 +1,9 @@
-# k3s.yml or your existing playbook
+# This is to upgrade the k3s service tls to accept kubecounty domain name as a tls san
 ---
 - hosts: k3s_servers
   become: true
   vars:
-    k3s_domain: "k8s.kubecounty.com" # Change this to your domain
+    k3s_domain: "k8s.kubecounty.com"
 
   tasks:
     - name: Update k3s service configuration
