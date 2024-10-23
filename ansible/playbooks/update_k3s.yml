@@ -8,7 +8,7 @@
   tasks:
     - name: Update k3s service configuration
       template:
-        src: k3s.service.j2
+        src: ../jinja/k3s.service.j2
         dest: /etc/systemd/system/k3s.service
       register: k3s_service_config
 
