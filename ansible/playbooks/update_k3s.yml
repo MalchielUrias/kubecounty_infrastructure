@@ -1,0 +1,26 @@
+# k3s.yml or your existing playbook
+---
+- hosts: k3s_servers
+  become: true
+  vars:
+    k3s_domain: "k8s.kubecounty.com" # Change this to your domain
+
+  tasks:
+    - name: Update k3s service configuration
+      template:
+        src: k3s.service.j2
+        dest: /etc/systemd/system/k3s.service
+      register: k3s_service_config
+
+    - name: Remove existing certificates
+      file:
+        path: /var/lib/rancher/k3s/server/tls
+        state: absent
+      when: k3s_service_config.changed
+
+    - name: Restart k3s service
+      systemd:
+        name: k3s
+        state: restarted
+        daemon_reload: yes
+      when: k3s_service_config.changed
