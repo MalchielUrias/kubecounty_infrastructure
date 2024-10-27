@@ -9,6 +9,12 @@
         cilium hubble enable
       tags: hubble
 
+    # Enable Hubble UI
+    - name: Enable Hubble
+      shell: |
+        cilium hubble enable --ui
+      tags: hubble
+
     # Verify Hubble installation
     - name: Verify Hubble installation
       shell: |
