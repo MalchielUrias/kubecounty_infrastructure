@@ -19,7 +19,7 @@ jobs:
       - name: Copy files to ec2
         uses: appleboy/scp-action@master
         with:
-          host: 54.76.192.164
+          host: 34.240.248.222
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.BASTION_KEY }}
           source: "ansible/"
