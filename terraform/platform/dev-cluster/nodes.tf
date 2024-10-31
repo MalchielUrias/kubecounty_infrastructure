@@ -79,6 +79,14 @@ module "worker_node_sg" {
     },
     {
       "type"        = "ingress"
+      "description" = "Allow Cilium Health Check"
+      "from_port"   = 4240
+      "to_port"     = 4240
+      "protocol"    = "tcp"
+      "cidr_blocks" = ["10.0.2.0/24"]
+    },
+    {
+      "type"        = "ingress"
       "description" = "Allow NodePort access (if needed)"
       "from_port"   = 30000
       "to_port"     = 32767
@@ -90,7 +98,28 @@ module "worker_node_sg" {
       "from_port"   = 53,
       "to_port"     = 53,
       "protocol"    = "tcp",
-      "cidr_blocks" = ["10.0.1.0/24"]
+      "cidr_blocks" = ["10.0.0.0/16"]
+    },
+    {
+      "type"        = "ingress"
+      "from_port"   = 53,
+      "to_port"     = 53,
+      "protocol"    = "udp",
+      "cidr_blocks" = ["10.0.0.0/16"]
+    },
+    {
+      "type"        = "ingress"
+      "from_port"   = 0,
+      "to_port"     = 0,
+      "protocol"    = "-1",
+      "cidr_blocks" = ["10.45.0.0/16"]
+    },
+    {
+      "type"        = "ingress"
+      "from_port"   = -1,
+      "to_port"     = -1,
+      "protocol"    = "icmp",
+      "cidr_blocks" = ["10.0.0.0/16"]
     },
     {
       "type"        = "egress"
@@ -116,6 +145,21 @@ module "master_node_sg" {
       "from_port"   = 22,
       "to_port"     = 22,
       "protocol"    = "tcp",
+      "cidr_blocks" = ["10.0.1.0/24"]
+    },
+    {
+      "type"        = "ingress"
+      "from_port"   = 53,
+      "to_port"     = 53,
+      "protocol"    = "tcp",
+      "cidr_blocks" = ["10.0.1.0/24"]
+    },
+
+    {
+      "type"        = "ingress"
+      "from_port"   = 53,
+      "to_port"     = 53,
+      "protocol"    = "udp",
       "cidr_blocks" = ["10.0.1.0/24"]
     },
     {
@@ -156,6 +200,36 @@ module "master_node_sg" {
       "to_port"     = 53,
       "protocol"    = "tcp",
       "cidr_blocks" = ["10.0.1.0/24"]
+    },
+    {
+      "type"        = "ingress"
+      "from_port"   = -1,
+      "to_port"     = -1,
+      "protocol"    = "icmp",
+      "cidr_blocks" = ["10.0.0.0/16"]
+    },
+    {
+      "type"        = "ingress"
+      "description" = "Allow Cilium BPF tunneling (if enabled)"
+      "from_port"   = 8472
+      "to_port"     = 8472
+      "protocol"    = "udp"
+      "cidr_blocks" = ["10.0.2.0/24"]
+    },
+    {
+      "type"        = "ingress"
+      "description" = "Allow Cilium Health Check"
+      "from_port"   = 4240
+      "to_port"     = 4240
+      "protocol"    = "tcp"
+      "cidr_blocks" = ["10.0.2.0/24"]
+    },
+    {
+      "type"        = "ingress"
+      "from_port"   = 0,
+      "to_port"     = 0,
+      "protocol"    = "-1",
+      "cidr_blocks" = ["10.45.0.0/16"]
     },
     {
       "type"        = "egress"

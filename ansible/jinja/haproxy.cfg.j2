@@ -29,3 +29,24 @@ backend k8s-api-backend
     {% for host in groups['masters'] %}
     server {{ host }} {{ hostvars[host]['ansible_host'] }}:6443 check
     {% endfor %}
+
+# Traefik through HAProxy
+frontend http-in
+    bind *:80
+    mode tcp
+    default_backend web-servers
+
+frontend https-in
+    bind *:443
+    mode tcp
+    default_backend secure-web-servers
+
+backend web-servers
+    mode tcp
+    balance roundrobin
+    server traefik-80 10.0.2.96:80 check  # Metal-LB assigned LoadBalancer IP
+
+backend secure-web-servers
+    mode tcp
+    balance roundrobin
+    server traefik-443 10.0.2.96:443 check  # Same Metal-LB LoadBalancer IP
