@@ -3,7 +3,8 @@ variable "name" {
 }
 
 variable "description" {
-  type = string
+  type    = string
+  default = "Security Group"
 }
 
 variable "vpc_id" {

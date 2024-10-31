@@ -35,7 +35,7 @@ module "fck-nat" {
   # ha_mode              = true                 # Enables high-availability mode
   # eip_allocation_ids   = ["eipalloc-abc1234"] # Allocation ID of an existing EIP
   # use_cloudwatch_agent = true                 # Enables Cloudwatch agent and have metrics reported
-  instance_type = "t3.micro"
+  instance_type = "t4g.micro"
 
   update_route_tables = true
   route_tables_ids = {
