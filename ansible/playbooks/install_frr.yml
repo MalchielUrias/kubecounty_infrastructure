@@ -25,7 +25,7 @@
 
     - name: Configure FRR
       template:
-        src: ../jinja/frr.conf.j2
+        src: ../jinja/frr.cfg.j2
         dest: /etc/frr/frr.conf
         owner: ubuntu
         group: ubuntu
