@@ -1,0 +1,15 @@
+frr version 8.1
+frr defaults traditional
+hostname ip-10-0-1-74
+log syslog informational
+no ipv6 forwarding
+service integrated-vtysh-config
+
+router bgp {{ frr_bgp_asn }}
+ # Using your k3s subnet directly
+ neighbor 10.0.2.0/24 remote-as {{ k3s_bgp_asn }}
+ 
+ address-family ipv4 unicast
+  neighbor 10.0.2.0/24 activate
+ exit-address-family
+!
