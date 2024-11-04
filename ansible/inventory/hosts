@@ -1,6 +1,6 @@
 [workers]
-worker1 ansible_host=10.0.2.173
-worker2 ansible_host=10.0.2.128
+worker1 ansible_host=10.0.2.233
+worker2 ansible_host=10.0.2.110
 
 [masters]
 master1 ansible_host=10.0.2.13 k3s_token=placeholder
