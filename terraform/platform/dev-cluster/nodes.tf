@@ -55,6 +55,14 @@ module "worker_node_sg" {
     },
     {
       "type"        = "ingress"
+      "description" = "Allow BGP"
+      "from_port"   = 179,
+      "to_port"     = 179,
+      "protocol"    = "tcp",
+      "cidr_blocks" = ["10.0.0.0/16"]
+    },
+    {
+      "type"        = "ingress"
       "description" = "Allow etcd communication from master node"
       "from_port"   = 2379,
       "to_port"     = 2380,
@@ -153,6 +161,14 @@ module "master_node_sg" {
       "to_port"     = 53,
       "protocol"    = "tcp",
       "cidr_blocks" = ["10.0.1.0/24"]
+    },
+    {
+      "type"        = "ingress"
+      "description" = "Allow BGP"
+      "from_port"   = 179,
+      "to_port"     = 179,
+      "protocol"    = "tcp",
+      "cidr_blocks" = ["10.0.0.0/16"]
     },
 
     {

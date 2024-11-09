@@ -65,6 +65,14 @@ variable "bastion_ingress" {
     },
     {
       "type"        = "ingress"
+      "description" = "Allow BGP"
+      "from_port"   = 179,
+      "to_port"     = 179,
+      "protocol"    = "tcp",
+      "cidr_blocks" = ["10.0.0.0/16"]
+    },
+    {
+      "type"        = "ingress"
       "from_port"   = 53,
       "to_port"     = 53,
       "protocol"    = "tcp",
@@ -81,7 +89,7 @@ variable "bastion_ingress" {
 }
 
 variable "bastion_instance_type" {
-  default = "t2.micro"
+  default = "t3.micro"
 }
 
 variable "ami" {

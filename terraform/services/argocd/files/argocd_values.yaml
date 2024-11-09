@@ -1,0 +1,29 @@
+global:
+  domain: argo.kubecounty.com
+configs:
+  
+  clusterCredentials:
+    in-cluster:
+      server: https://kubernetes.default.svc
+      config:
+        tlsClientConfig:
+          insecure: true
+
+  credentialTemplates:
+    ssh-creds:
+      url: git@github.com:MalchielUrias
+      sshPrivateKey: "${github_ssh_key}"
+  repositories:
+    homelab-repo:
+      url: git@github.com:MalchielUrias/homelab.git
+
+server:
+  ingress:
+    enabled: true
+    ingressClassName: traefik
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: websecure
+      traefik.ingress.kubernetes.io/router.tls: "true"
+      cert-manager.io/cluster-issuer: letsencrypt
+      external-dns.alpha.kubernetes.io/target: 3.252.232.202
+    tls: true
