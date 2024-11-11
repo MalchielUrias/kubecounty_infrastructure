@@ -18,19 +18,11 @@ terraform {
       source  = "hashicorp/helm"
       version = "2.16.1"
     }
-
-    linode = {
-      source  = "linode/linode"
-    }
   }
 }
 
 provider "aws" {
   region  = "eu-west-1"
-}
-
-provider "linode" {
-  token = var.token
 }
 
 provider "kubernetes" {
