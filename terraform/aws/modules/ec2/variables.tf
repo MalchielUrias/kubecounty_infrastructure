@@ -32,3 +32,7 @@ variable "network_interface" {
   ))
   default = {}
 }
+
+variable "user_data" {
+  type = string
+}
