@@ -35,4 +35,5 @@ variable "network_interface" {
 
 variable "user_data" {
   type = string
+  default = null
 }
