@@ -16,7 +16,7 @@ resource "aws_instance" "this" {
   #   }
   # }
 
-  user_data     = var.user_data != null ? var.user_data : null
+  user_data     = var.user_data
 
 
   tags = var.tags
