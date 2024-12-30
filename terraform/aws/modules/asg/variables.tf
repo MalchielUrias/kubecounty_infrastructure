@@ -35,13 +35,13 @@ variable "vpc_zone_identifier" {
 }
 
 variable "on_demand_percentage_above_base_capacity" {
-  
+  type = number
 }
 
 variable "spot_instance_pools" {
-  
+  type = number
 }
 
 variable "host_types" {
-  
+  type = list(string)
 }
