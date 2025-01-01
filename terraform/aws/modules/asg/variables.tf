@@ -45,3 +45,12 @@ variable "spot_instance_pools" {
 variable "host_types" {
   type = list(string)
 }
+
+variable "user_data" {
+  type = string
+  default = null
+}
+
+variable "key_name" {
+  type = string
+}

@@ -4,6 +4,10 @@ resource "aws_launch_template" "this" {
   instance_type = var.instance_type
   image_id      = var.ami_id
 
+  user_data     = var.user_data
+
+  key_name = var.key_name
+
   network_interfaces {
     associate_public_ip_address = var.associate_public_ip
     security_groups             = var.security_group_ids
@@ -16,6 +20,7 @@ resource "aws_autoscaling_group" "this" {
   min_size            = var.min_size
   desired_capacity    = var.desired_capacity
   vpc_zone_identifier = var.vpc_zone_identifier
+
 
   mixed_instances_policy {
     instances_distribution {
