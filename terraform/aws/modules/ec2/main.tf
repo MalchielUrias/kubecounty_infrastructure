@@ -32,7 +32,7 @@ resource "null_resource" "provision" {
       type        = "ssh"
       user        = var.provisioner_ssh_user
       private_key = file(var.provisioner_private_key_path)
-      host        = var.provisioner_use_private_ip ? self.private_ip : self.public_ip
+      host        = var.provisioner_use_private_ip ? aws_instance.this[count.index].private_ip: aws_instance.this[count.index].public_ip
     }
   }
 }
