@@ -18,6 +18,22 @@ resource "aws_instance" "this" {
 
   user_data     = var.user_data
 
+  dynamic "provisioner" {
+    for_each = var.enable_provisioner ? [1] : []
+    content {
+      remote-exec {
+        script = var.provisioner_script
+
+        connection {
+          type        = "ssh"
+          user        = var.ssh_user
+          private_key = file(var.private_key_path)
+          host        = var.use_private_ip ? self.private_ip : self.public_ip
+        }
+      }
+    }
+  }
+
   iam_instance_profile = var.iam_instance_profile
 
 

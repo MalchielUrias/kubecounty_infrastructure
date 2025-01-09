@@ -42,3 +42,33 @@ variable "iam_instance_profile" {
   type = string
   default = null
 }
+
+variable "enable_provisioner" {
+  description = "Whether to enable the provisioner for EC2 instance"
+  type        = bool
+  default     = false
+}
+
+variable "provisioner_script" {
+  description = "Path to the script for the remote-exec provisioner"
+  type        = string
+  default     = ""
+}
+
+variable "provisioner_ssh_user" {
+  description = "SSH username for the instance"
+  type        = string
+  default     = "ubuntu"  # Default for Ubuntu AMIs
+}
+
+variable "provisioner_private_key_path" {
+  description = "Path to the private key for SSH access"
+  type        = string
+}
+
+variable "provisioner_use_private_ip" {
+  description = "Whether to use the private IP for SSH connection"
+  type        = bool
+  default     = false
+}
+
