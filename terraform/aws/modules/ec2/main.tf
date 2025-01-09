@@ -26,9 +26,9 @@ resource "aws_instance" "this" {
 
         connection {
           type        = "ssh"
-          user        = var.ssh_user
-          private_key = file(var.private_key_path)
-          host        = var.use_private_ip ? self.private_ip : self.public_ip
+          user        = var.provisioner_ssh_user
+          private_key = file(var.provisioner_private_key_path)
+          host        = var.provisioner_use_private_ip ? self.private_ip : self.public_ip
         }
       }
     }
