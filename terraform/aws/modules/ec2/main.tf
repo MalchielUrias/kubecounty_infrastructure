@@ -30,6 +30,13 @@ resource "null_resource" "provision" {
   provisioner "file" {
   source      = var.provisioner_script # Local script path
   destination = "/tmp/setup.sh"        # Remote destination
+
+  connection {
+      type        = "ssh"
+      user        = var.provisioner_ssh_user
+      private_key = file(var.provisioner_private_key_path)
+      host        = var.provisioner_use_private_ip ? aws_instance.this.private_ip : aws_instance.this.public_ip
+    }
 }
 
   provisioner "remote-exec" {
