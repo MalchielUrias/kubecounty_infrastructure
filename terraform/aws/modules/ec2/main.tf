@@ -26,8 +26,17 @@ resource "aws_instance" "this" {
 
 resource "null_resource" "provision" {
   count = var.enable_provisioner ? 1 : 0  #
+
+  provisioner "file" {
+  source      = var.provisioner_script # Local script path
+  destination = "/tmp/setup.sh"        # Remote destination
+}
+
   provisioner "remote-exec" {
-    script = var.provisioner_script  
+    inline = [
+      "chmod +x /tmp/setup.sh",
+      "sudo /tmp/setup.sh"
+    ]
     connection {
       type        = "ssh"
       user        = var.provisioner_ssh_user
