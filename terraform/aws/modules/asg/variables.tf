@@ -61,7 +61,7 @@ variable "iam_instance_profile_name" {
   default     = null
 }
 
-variable "tags" {
+variable "asg_tags" {
   description = "Map of tags to apply to the instances in the ASG"
   type        = map(string)
   default     = {}
