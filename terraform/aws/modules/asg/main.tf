@@ -12,6 +12,14 @@ resource "aws_launch_template" "this" {
     associate_public_ip_address = var.associate_public_ip
     security_groups             = var.security_group_ids
   }
+
+  dynamic "iam_instance_profile" {
+    for_each = var.iam_instance_profile_name != null ? [1] : []
+    content {
+      name = var.iam_instance_profile_name
+    }
+  }
+
 }
 
 resource "aws_autoscaling_group" "this" {
