@@ -64,6 +64,7 @@ variable "provisioner_ssh_user" {
 variable "provisioner_private_key_path" {
   description = "Path to the private key for SSH access"
   type        = string
+  default = ""
 }
 
 variable "provisioner_use_private_ip" {
