@@ -54,3 +54,9 @@ variable "user_data" {
 variable "key_name" {
   type = string
 }
+
+variable "iam_instance_profile_name" {
+  description = "IAM instance profile name (optional)"
+  type        = string
+  default     = null
+}
