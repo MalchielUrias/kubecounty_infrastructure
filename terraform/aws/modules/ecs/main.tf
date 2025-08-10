@@ -1,3 +1,9 @@
+data "aws_availability_zones" "available" {}
+
+data "local_file" "container_definitions" {
+  filename = var.container_definitions_json
+}
+
 module "ecs_cluster" {
   source = "terraform-aws-modules/ecs/aws"
   version = "6.2.1"
@@ -72,18 +78,18 @@ module "ecs_cluster" {
 #### ECS Service 
 
 module "ecs_service" {
-  source = "../../modules/service"
+  source = "terraform-aws-modules/ecs/aws//modules/service"
 
   # Service
-  name        = local.name
+  name        = var.service_name
   cluster_arn = module.ecs_cluster.arn
 
   # Task Definition
   requires_compatibilities = ["EC2"]
   capacity_provider_strategy = {
     # On-demand instances
-    ex_1 = {
-      capacity_provider = module.ecs_cluster.autoscaling_capacity_providers["ex_1"].name
+    on_demand_capacity = {
+      capacity_provider = module.ecs_cluster.autoscaling_capacity_providers["on_demand"].name
       weight            = 1
       base              = 1
     }
@@ -108,63 +114,21 @@ module "ecs_service" {
   }
 
   # Container definition(s)
-  container_definitions = {
-    (local.container_name) = {
-      image = "public.ecr.aws/ecs-sample-image/amazon-ecs-sample:latest"
-      portMappings = [
-        {
-          name          = local.container_name
-          containerPort = local.container_port
-          hostPort      = local.container_port
-          protocol      = "tcp"
-        }
-      ]
-
-      mountPoints = [
-        {
-          sourceVolume  = "my-vol",
-          containerPath = "/var/www/my-vol"
-        },
-        {
-          sourceVolume  = "ebs-volume"
-          containerPath = "/ebs/data"
-        }
-      ]
-
-      entrypoint = ["/usr/sbin/apache2", "-D", "FOREGROUND"]
-
-      # Example image used requires access to write to root filesystem
-      readonlyRootFilesystem = false
-
-      enable_cloudwatch_logging              = true
-      create_cloudwatch_log_group            = true
-      cloudwatch_log_group_name              = "/aws/ecs/${local.name}/${local.container_name}"
-      cloudwatch_log_group_retention_in_days = 7
-
-      logLonfiguration = {
-        logDriver = "awslogs"
-      }
-    }
-  }
+  # container_definitions = var.container_definitions
+  container_definitions = data.local_file.container_definitions.content
 
   load_balancer = {
     service = {
-      target_group_arn = module.alb.target_groups["ex_ecs"].arn
-      container_name   = local.container_name
-      container_port   = local.container_port
+      target_group_arn = var.target_group_arn
+      container_name   = var.container_name
+      container_port   = var.container_port
     }
   }
 
-  subnet_ids = module.vpc.private_subnets
-  security_group_ingress_rules = {
-    alb_http = {
-      from_port                    = local.container_port
-      description                  = "Service port"
-      referenced_security_group_id = module.alb.security_group_id
-    }
-  }
+  subnet_ids = var.service_subnet_ids
+  security_group_ingress_rules = var.security_group_ingress_rules
 
-  tags = local.tags
+  tags = var.tags
 }
 
 
