@@ -1,4 +1,9 @@
-output "cluster_name" {
-  value = aws_ecs_cluster.this.name
+output "asg_name" {
+  value = aws_autoscaling_group.this.name 
+  
 }
 
+output "asg_arn" {
+  value = aws_autoscaling_group.this.arn
+  
+}
