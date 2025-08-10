@@ -45,3 +45,14 @@ variable "fargate_spot_capacity" {
   type        = number
   default     = 10
 }
+
+variable "auto_scaling_group_arn" {
+  description = "ARN of the Auto Scaling Group for on-demand instances"
+  type        = string
+  
+}
+
+variable "spot_auto_scaling_group_arn" {
+  description = "ARN of the Auto Scaling Group for spot instances"
+  type        = string
+}
