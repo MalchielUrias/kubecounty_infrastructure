@@ -163,3 +163,9 @@ variable "instance_market_options" {
   type        = string
   default     = "spot"
 }
+
+variable "user_data" {
+  description = "The Base64-encoded user data to provide when launching the instance"
+  type        = string
+  default     = null
+}

@@ -153,4 +153,6 @@ module "asg" {
     Environment = "dev"
     Project     = "megasecret"
   }
+
+  user_data              = var.user_data
 }
