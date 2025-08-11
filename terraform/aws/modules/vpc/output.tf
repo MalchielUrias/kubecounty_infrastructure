@@ -1,27 +1,16 @@
+# Output VPC ID
 output "vpc_id" {
   value = aws_vpc.this.id
 }
 
-output "public_subnet_id" {
-  value = aws_subnet.public.id
-}
+# ====== Output Subnet ID =======
 
-output "public_subnet_ipv6_cidr" {
-  value = aws_subnet.public.ipv6_cidr_block
-}
-
+# Priv Subnet
 output "private_subnet_id" {
-  value = aws_subnet.private.id
+  value = { for val, subnet in aws_subnet.priv_subnet : val => subnet.id }
 }
 
-output "private_subnet_ipv6_cidr" {
-  value = aws_subnet.private.ipv6_cidr_block
-}
-
-output "private_rt_id" {
-  value = aws_route_table.private.id
-}
-
-output "public_rt_id" {
-  value = aws_route_table.public.id
+# Pub Subnet
+output "pub_subnet_id" {
+  value = { for val, subnet in aws_subnet.pub_subnet : val => subnet.id }
 }
