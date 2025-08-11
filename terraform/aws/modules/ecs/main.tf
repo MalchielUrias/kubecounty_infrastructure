@@ -1,9 +1,5 @@
 data "aws_availability_zones" "available" {}
 
-data "local_file" "container_definitions" {
-  filename = var.container_definitions_json
-}
-
 module "ecs_cluster" {
   source = "terraform-aws-modules/ecs/aws//modules/cluster"
   version = "6.2.1"

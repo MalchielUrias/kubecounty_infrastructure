@@ -57,17 +57,6 @@ variable "spot_auto_scaling_group_arn" {
   type        = string
 }
 
-variable "container_definitions_json" {
-  description = "Path to the JSON file with container definitions"
-  type        = string
-}
-
-variable "service_subnet_ids" {
-  description = "List of subnet IDs for the ECS service"
-  type        = list(string)
-  
-}
-
 variable "security_group_ingress_rules" {
   description = "Security group ingress rules for the ECS service"
   type        = map(object({
@@ -79,25 +68,9 @@ variable "security_group_ingress_rules" {
   
 }
 
-variable "target_group_arn" {
-  description = "ARN of the target group for the ECS service"
-  type        = string
-}
-
-variable "container_name" {
-  description = "Name of the container in the ECS service"
-  type        = string
-}
-
-
 variable "container_port" {
   description = "Port on which the container listens"
   type        = number
   default     = 80
-}
-
-variable "service_name" {
-  description = "Name of the ECS service"
-  type        = string
 }
 
