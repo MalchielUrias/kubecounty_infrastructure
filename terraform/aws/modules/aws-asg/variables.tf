@@ -157,3 +157,9 @@ variable "vpc_zone_identifier" {
   default     = []
   
 }
+
+variable "instance_market_options" {
+  description = "Market options for the Auto Scaling Group instances (e.g., 'spot', 'on-demand')"
+  type        = string
+  default     = "spot"
+}
