@@ -1,35 +1,27 @@
 variable "cidr_block" {
-  description = "vpc cidr block"
-  type        = string
+  type = string
 }
 
 variable "ipv6_enabled" {
-  description = "ipv6 enabled"
-  type        = bool
-  default     = true
+  type = bool
 }
 
-variable "public_subnet_cidr" {
-  description = "public ip cidr"
-  type        = string
+variable "assign_ipv6_address_on_creation" {
+  type = bool
 }
 
-variable "private_subnet_cidr" {
-  description = "public ip cidr"
-  type        = string
+variable "priv_subnet_cidrs" {
+  type = list(string)
+}
+
+variable "pub_subnet_cidrs" {
+  type = list(string)
 }
 
 variable "name" {
-  description = "name of vpc"
-  type        = string
+  type = string
 }
 
 variable "tags" {
-  description = "metadata and tags"
-  type        = map(string)
-}
-
-variable "network_interface_id" {
-  description = "network interface id"
-  type        = string
+  type = map(string)
 }
