@@ -44,6 +44,7 @@ resource "aws_subnet" "priv_subnet" {
 resource "aws_subnet" "pub_subnet" {
   for_each = local.pub_subnet_cidr
   vpc_id = aws_vpc.this.id
+  map_public_ip_on_launch = true 
   assign_ipv6_address_on_creation = var.assign_ipv6_address_on_creation
   ipv6_cidr_block = var.ipv6_enabled ? local.pub_ipv6_cidrs[each.key] : null
   cidr_block = each.value
@@ -87,23 +88,23 @@ resource "aws_route_table" "pub" {
 
 
 # Create NAT Gateway
-resource "aws_eip" "this" {
-  domain = "vpc"
+# resource "aws_eip" "this" {
+#   domain = "vpc"
 
-  tags = {
-    Name = "NAT Gateway EIP"
-  }
-}
+#   tags = {
+#     Name = "NAT Gateway EIP"
+#   }
+# }
 
-resource "aws_nat_gateway" "this" {
-  allocation_id = aws_eip.this.id
+# resource "aws_nat_gateway" "this" {
+#   allocation_id = aws_eip.this.id
 
-  subnet_id = aws_subnet.pub_subnet[0].id
+#   subnet_id = aws_subnet.pub_subnet[0].id
 
-  tags = {
-    Name = "${var.name}-natgw"
-  }
-}
+#   tags = {
+#     Name = "${var.name}-natgw"
+#   }
+# }
 
 # Add Egress-only Internet Gateway for IPv6
 resource "aws_egress_only_internet_gateway" "this" {
