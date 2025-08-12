@@ -56,11 +56,6 @@ resource "aws_route_table" "priv" {
   for_each =  local.priv_subnet_cidr
   vpc_id = aws_vpc.this.id
 
-  route {
-    cidr_block = "0.0.0.0/0"
-    nat_gateway_id = aws_nat_gateway.this.id
-  }
-
   dynamic "route" {
     for_each = var.ipv6_enabled ? [1] : []
     content {
@@ -83,26 +78,6 @@ resource "aws_route_table" "pub" {
   route {
     ipv6_cidr_block = "::/0"
     gateway_id = aws_internet_gateway.this.id
-  }
-}
-
-
-# Create NAT Gateway
-resource "aws_eip" "this" {
-  domain = "vpc"
-
-  tags = {
-    Name = "NAT Gateway EIP"
-  }
-}
-
-resource "aws_nat_gateway" "this" {
-  allocation_id = aws_eip.this.id
-
-  subnet_id = aws_subnet.pub_subnet[0].id
-
-  tags = {
-    Name = "${var.name}-natgw"
   }
 }
 
