@@ -88,23 +88,23 @@ resource "aws_route_table" "pub" {
 
 
 # Create NAT Gateway
-# resource "aws_eip" "this" {
-#   domain = "vpc"
+resource "aws_eip" "this" {
+  domain = "vpc"
 
-#   tags = {
-#     Name = "NAT Gateway EIP"
-#   }
-# }
+  tags = {
+    Name = "NAT Gateway EIP"
+  }
+}
 
-# resource "aws_nat_gateway" "this" {
-#   allocation_id = aws_eip.this.id
+resource "aws_nat_gateway" "this" {
+  allocation_id = aws_eip.this.id
 
-#   subnet_id = aws_subnet.pub_subnet[0].id
+  subnet_id = aws_subnet.pub_subnet[0].id
 
-#   tags = {
-#     Name = "${var.name}-natgw"
-#   }
-# }
+  tags = {
+    Name = "${var.name}-natgw"
+  }
+}
 
 # Add Egress-only Internet Gateway for IPv6
 resource "aws_egress_only_internet_gateway" "this" {
