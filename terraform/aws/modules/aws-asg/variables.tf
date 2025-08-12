@@ -151,7 +151,7 @@ variable "desired_capacity" {
   
 }
 
-variable "az" {
+variable "vpc_zone_identifier" {
   description = "List of subnet IDs for the Auto Scaling Group"
   type        = list(string)
   default     = []
