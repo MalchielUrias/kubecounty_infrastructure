@@ -10,7 +10,7 @@ module "asg" {
   desired_capacity          = var.desired_capacity
   wait_for_capacity_timeout = 0
   health_check_type         = "EC2"
-  availability_zones       = var.az
+  vpc_zone_identifier       = var.vpc_zone_identifier
 
   initial_lifecycle_hooks = var.initial_lifecycle_hooks
 
