@@ -104,7 +104,7 @@ module "asg" {
   }
 
   instance_market_options = {
-    market_type = "on-demand"
+    market_type = var.instance_market_options
   }
 
   # This will ensure imdsv2 is enabled, required, and a single hop which is aws security

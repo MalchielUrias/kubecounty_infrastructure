@@ -176,3 +176,4 @@ variable "protect_from_scale_in" {
   default     = false
   
 }
+
