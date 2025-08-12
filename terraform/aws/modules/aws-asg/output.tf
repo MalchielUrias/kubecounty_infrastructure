@@ -1,9 +1,9 @@
 output "asg_name" {
-  value = aws_autoscaling_group.this.name 
+  value = module.asg.autoscaling_group_name
   
 }
 
 output "asg_arn" {
-  value = aws_autoscaling_group.this.arn
+  value = module.asg.autoscaling_group_arn
   
 }
