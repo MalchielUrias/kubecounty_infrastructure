@@ -169,3 +169,10 @@ variable "user_data" {
   type        = string
   default     = null
 }
+
+variable "protect_from_scale_in" {
+  description = "Whether to protect instances from scale-in"
+  type        = bool
+  default     = false
+  
+}

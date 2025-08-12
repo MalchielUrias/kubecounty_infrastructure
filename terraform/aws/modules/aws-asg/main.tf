@@ -65,6 +65,8 @@ module "asg" {
     AmazonSSMManagedInstanceCore = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
   }
 
+  protect_from_scale_in = var.protect_from_scale_in
+
   block_device_mappings = [
     {
       # Root volume
@@ -103,8 +105,14 @@ module "asg" {
 
   instance_market_options = {
     market_type = var.instance_market_options
-    spot_options = {
-      block_duration_minutes = 60
+
+    # If using spot instances, you can specify the block duration
+
+    dynamic "spot_options" {
+      for_each = var.instance_market_options == "spot" ? [1] : []
+      content {
+        block_duration_minutes = 60
+      }
     }
   }
 
