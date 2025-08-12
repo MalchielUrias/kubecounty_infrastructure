@@ -104,16 +104,7 @@ module "asg" {
   }
 
   instance_market_options = {
-    market_type = var.instance_market_options
-
-    # If using spot instances, you can specify the block duration
-
-    dynamic "spot_options" {
-      for_each = var.instance_market_options == "spot" ? [1] : []
-      content {
-        block_duration_minutes = 60
-      }
-    }
+    market_type = "on-demand"
   }
 
   # This will ensure imdsv2 is enabled, required, and a single hop which is aws security
