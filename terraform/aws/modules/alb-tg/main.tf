@@ -18,7 +18,7 @@ resource "aws_lb_target_group" "this" {
   }
 
   dynamic "health_check" {
-    for_each = var.health_check
+    for_each = length(var.health_check) == 0 ? [] : [var.health_check]
 
     content {
       interval            = lookup(health_check.value, "interval", null)
