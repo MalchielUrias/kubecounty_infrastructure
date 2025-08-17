@@ -1,0 +1,47 @@
+---
+- name: Configure EC2 as NAT Gateway
+  hosts: localhost
+  become: yes
+  tasks:
+    - name: Ensure IP forwarding is enabled
+      sysctl:
+        name: net.ipv4.ip_forward
+        value: "1"
+        state: present
+        sysctl_set: yes
+
+    - name: Add IP forwarding to sysctl.conf to persist across reboots
+      lineinfile:
+        path: /etc/sysctl.conf
+        regexp: "^#?net.ipv4.ip_forward"
+        line: "net.ipv4.ip_forward=1"
+        state: present
+
+    - name: Ensure the /etc/iptables directory exists
+      file:
+        path: /etc/iptables
+        state: directory
+
+    - name: Configure iptables for NAT (masquerade)
+      iptables:
+        table: nat
+        chain: POSTROUTING
+        jump: MASQUERADE
+        out_interface: eth0
+
+    - name: Save iptables rules to persist across reboots
+      shell: iptables-save > /etc/iptables/rules.v4
+      args:
+        creates: /etc/iptables/rules.v4
+
+    - name: Ensure iptables-persistent package is installed
+      apt:
+        name: iptables-persistent
+        state: present
+        update_cache: yes
+
+    - name: Enable and start the iptables-persistent service
+      systemd:
+        name: netfilter-persistent
+        enabled: yes
+        state: started

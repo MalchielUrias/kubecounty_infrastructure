@@ -1,0 +1,73 @@
+global
+    log /dev/log local0
+    log /dev/log local1 notice
+    chroot /var/lib/haproxy
+    stats socket /run/haproxy/admin.sock mode 660 level admin expose-fd listeners
+    stats timeout 30s
+    user haproxy
+    group haproxy
+    daemon
+
+defaults
+    log global
+    option tcplog
+    option dontlognull
+    timeout connect 5000ms
+    timeout client  50000ms
+    timeout server  100000ms
+
+frontend k8s-api
+    bind *:6443
+    mode tcp
+    option tcplog
+    default_backend k8s-api-backend
+
+backend k8s-api-backend
+    mode tcp
+    option tcp-check
+    balance roundrobin
+    {% for host in groups['masters'] %}
+    server {{ host }} {{ hostvars[host]['ansible_host'] }}:6443 check
+    {% endfor %}
+
+frontend http-in
+    bind *:80
+#    bind *:443 ssl crt /etc/haproxy/certs
+#    acl is_https hdr(X-Forwarded-Proto) -i https
+#    http-request redirect scheme https if !is_https
+
+    use_backend traefik-http #if { ssl_fc }
+ #   use_backend traefik-https if is_https
+
+# Traefik through HAProxy
+#frontend http-in
+#    bind *:80
+#    mode tcp
+#    default_backend web-servers
+
+#frontend https-in
+#    bind *:443
+#    mode tcp
+#    default_backend secure-web-servers
+
+# backend web-servers
+#    mode tcp
+#    balance roundrobin
+#    server traefik-80 10.0.2.96:80 check  # Metal-LB assigned LoadBalancer IP
+
+# backend secure-web-servers
+#    mode tcp
+#    balance roundrobin
+#    server traefik-443 10.0.2.96:443 check  # Same Metal-LB LoadBalancer IP
+
+backend traefik-http
+    mode http
+    balance roundrobin
+    server worker1 10.0.2.110:32080 check
+    server worker2 10.0.2.233:32080 check
+
+#backend traefik-https
+#    balance roundrobin
+#    server worker1 10.0.2.110:32443 check ssl verify none
+#    server worker2 10.0.2.233:32443 check ssl verify none
+
