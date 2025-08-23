@@ -141,16 +141,12 @@ module "asg" {
     {
       resource_type = "volume"
       tags          = { WhatAmI = "Volume" }
-    },
-    {
-      resource_type = "spot-instances-request"
-      tags          = { WhatAmI = "SpotInstanceRequest" }
     }
   ]
 
   tags = {
-    Environment = "dev"
-    Project     = "megasecret"
+    Project = "Infra"
+    Owner     = "KubeCounty"
   }
 
   user_data              = var.user_data
