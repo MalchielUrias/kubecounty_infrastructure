@@ -17,6 +17,11 @@ variable "asg_instance_type" {
   
 }
 
+variable "asg_key_name" {
+  description = "Key pair name for the Auto Scaling Group instances"
+  type        = string
+}
+
 variable "asg_root_volume_size" {
   description = "Size of the root volume in GB"
   type        = number
