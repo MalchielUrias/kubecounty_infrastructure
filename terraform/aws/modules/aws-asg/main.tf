@@ -50,6 +50,7 @@ module "asg" {
 
   image_id          = var.asg_image_id
   instance_type     = var.asg_instance_type
+  key_name = var.asg_key_name
   ebs_optimized     = true
   enable_monitoring = true
 
