@@ -64,6 +64,7 @@ module "asg" {
   }
   iam_role_policies = {
     AmazonSSMManagedInstanceCore = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+    EC2_Parameter_Store = "arn:aws:iam::891377273133:policy/EC2_Parameter_Store"
   }
 
   protect_from_scale_in = var.protect_from_scale_in
