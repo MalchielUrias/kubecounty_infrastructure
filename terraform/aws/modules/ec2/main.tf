@@ -16,6 +16,12 @@ resource "aws_instance" "this" {
   #   }
   # }
 
+  root_block_device {
+    volume_size = var.root_volume_size   # configurable
+    volume_type = "gp3"                  # gp3 is cheaper + flexible, gp2 also works
+    delete_on_termination = true
+  }
+
   user_data     = var.user_data
 
   iam_instance_profile = var.iam_instance_profile
