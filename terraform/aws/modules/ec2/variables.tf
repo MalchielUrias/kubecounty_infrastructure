@@ -73,3 +73,7 @@ variable "provisioner_use_private_ip" {
   default     = false
 }
 
+variable "root_volume_size" { 
+  description = "Size of the root volume in GB"
+  type        = number
+}
