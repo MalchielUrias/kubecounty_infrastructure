@@ -36,20 +36,6 @@ variable "asg_sec_volume_size" {
   
 }
 
-variable "asg_cpu_core_count" {
-  description = "Number of CPU cores for the Auto Scaling Group instances"
-  type        = number
-  default     = 1
-  
-}
-
-variable "asg_cpu_threads_per_core" {
-  description = "Number of threads per CPU core for the Auto Scaling Group instances"
-  type        = number
-  default     = 1
-  
-}
-
 variable "asg_security_groups" {
   description = "List of security group IDs to associate with the Auto Scaling Group instances"
   type        = list(string)
