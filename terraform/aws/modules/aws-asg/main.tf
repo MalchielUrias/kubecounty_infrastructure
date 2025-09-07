@@ -96,11 +96,6 @@ module "asg" {
     capacity_reservation_preference = "open"
   }
 
-  cpu_options = {
-    core_count       = var.asg_cpu_core_count
-    threads_per_core = var.asg_cpu_threads_per_core
-  }
-
   credit_specification = {
     cpu_credits = "standard"
   }
