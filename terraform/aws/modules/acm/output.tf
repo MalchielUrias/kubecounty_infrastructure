@@ -9,3 +9,7 @@ output "certificate_validation_records" {
     }
   ]
 }
+
+output "arn" {
+  value = aws_acm_certificate.cert.arn
+}
