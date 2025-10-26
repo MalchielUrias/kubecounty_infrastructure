@@ -4,6 +4,8 @@ resource "aws_acm_certificate" "cert" {
 
   tags = var.tags
 
+  region = var.region 
+
   lifecycle {
     create_before_destroy = true
   }
