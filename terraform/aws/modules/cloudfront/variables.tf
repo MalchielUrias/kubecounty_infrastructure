@@ -23,6 +23,6 @@ variable "cloudfront_oac_name" {
   type = string
 }
 
-variable "website_endpoint" {
+variable "bucket_regional_domain_name" {
   type = string
 }
