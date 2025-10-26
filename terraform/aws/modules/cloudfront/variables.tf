@@ -22,3 +22,7 @@ variable "domain_name" {
 variable "cloudfront_oac_name" {
   type = string
 }
+
+variable "website_endpoint" {
+  type = string
+}
