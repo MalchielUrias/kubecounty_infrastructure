@@ -11,7 +11,7 @@ resource "aws_cloudfront_origin_access_control" "site" {
 resource "aws_cloudfront_distribution" "site" {
   enabled             = true
   is_ipv6_enabled     = true
-  default_root_object = var.default_root_object
+  default_root_object = "index.html"
   aliases             = [var.domain_name, "www.${var.domain_name}"]
   price_class         = var.price_class  
 
@@ -44,9 +44,17 @@ resource "aws_cloudfront_distribution" "site" {
 
   # Custom error response for SPA-like behavior
   custom_error_response {
-    error_code         = 404
-    response_code      = 200
-    response_page_path = "/index.html"
+    error_code            = 404
+    response_code         = 404
+    response_page_path    = "/404.html"
+    error_caching_min_ttl = 300
+  }
+
+  custom_error_response {
+    error_code            = 403
+    response_code         = 200
+    response_page_path    = "/index.html"
+    error_caching_min_ttl = 10
   }
 
   restrictions {
