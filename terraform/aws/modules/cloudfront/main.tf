@@ -11,7 +11,7 @@ resource "aws_cloudfront_origin_access_control" "site" {
 resource "aws_cloudfront_distribution" "site" {
   enabled             = true
   is_ipv6_enabled     = true
-  default_root_object = "index.html"
+  default_root_object = var.default_root_object
   aliases             = [var.domain_name, "www.${var.domain_name}"]
   price_class         = var.price_class  
 
