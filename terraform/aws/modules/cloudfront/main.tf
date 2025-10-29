@@ -35,6 +35,15 @@ resource "aws_cloudfront_distribution" "site" {
       }
     }
 
+    dynamic "function_association" {
+      for_each = var.function_arn != null ? [1] : []
+      
+      content {
+        event_type   = var.function_event_type
+        function_arn = var.function_arn
+      }
+    }
+
     viewer_protocol_policy = "redirect-to-https"
     min_ttl                = 0
     default_ttl            = 3600
