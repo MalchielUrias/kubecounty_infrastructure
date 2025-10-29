@@ -3,5 +3,5 @@ resource "aws_cloudfront_function" "this" {
   runtime = "cloudfront-js-2.0"
   comment = var.function_comment
   publish = true
-  code    = file("${path.module}/scripts/function.js")
+  code    = var.code
 }
