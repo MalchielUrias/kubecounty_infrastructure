@@ -20,12 +20,9 @@ output "deployment_commands" {
     # Build MkDocs site
     mkdocs build
 
-    # Sync to S3
-    aws s3 sync site/ s3://${aws_s3_bucket.docs_bucket.id} --delete
-
     # Create CloudFront invalidation
     aws cloudfront create-invalidation \
-      --distribution-id ${aws_cloudfront_distribution.docs_distribution.id} \
+      --distribution-id ${aws_cloudfront_distribution.site.id} \
       --paths "/*"
   EOT
 }
