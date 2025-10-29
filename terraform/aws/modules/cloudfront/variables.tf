@@ -26,3 +26,12 @@ variable "cloudfront_oac_name" {
 variable "bucket_regional_domain_name" {
   type = string
 }
+
+variable "function_arn" {
+  type = string
+}
+
+variable "function_event_type" {
+  type = string
+  default = "viewer-request"
+}
