@@ -31,3 +31,7 @@ variable "timeout" {
   type = number
   default = 5
 }
+
+variable "region" {
+  type = string
+}

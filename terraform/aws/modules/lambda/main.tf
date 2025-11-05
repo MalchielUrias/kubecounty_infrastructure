@@ -7,6 +7,7 @@ resource "aws_lambda_function" "this" {
   runtime          = var.runtime
   publish          = var.publish
   timeout          = var.timeout
+  region           = var.region
 
   lifecycle {
     create_before_destroy = true
