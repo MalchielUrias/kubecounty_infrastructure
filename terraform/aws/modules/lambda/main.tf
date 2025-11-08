@@ -9,6 +9,14 @@ resource "aws_lambda_function" "this" {
   timeout          = var.timeout
   region           = var.region
 
+  dynamic "environment" {
+    for_each = length(var.environment_variables) > 0 ? [1] : []
+    
+    content {
+      variables = var.environment_variables
+    }
+  }
+
   lifecycle {
     create_before_destroy = true
   }
