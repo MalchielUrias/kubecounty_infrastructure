@@ -3,7 +3,7 @@ variable "log_group_name" {
 }
 
 variable "retention" {
-  type = string
+  type = number
 }
 
 variable "tags" {
