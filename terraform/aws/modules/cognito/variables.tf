@@ -19,3 +19,7 @@ variable "domain_name" {
 variable "callback_urls" {
   type = string
 }
+
+variable "generate_secret" {
+  type = string
+}
