@@ -35,3 +35,15 @@ variable "function_event_type" {
   type = string
   default = "viewer-request"
 }
+
+variable "enable_lambda_association" {
+  description = "Enable Cognito authentication via Lambda@Edge"
+  type        = bool
+  default     = false
+}
+
+variable "lambda_arn" {
+  description = "Lambda@Edge function ARN for authentication (required if enable_cognito_auth is true)"
+  type        = string
+  default     = ""
+}
