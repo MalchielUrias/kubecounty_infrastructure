@@ -1,4 +1,4 @@
-resource "aws_cloudwatch_log_subscription_filter" "lambda_log_export" {
+resource "aws_cloudwatch_log_subscription_filter" "this" {
   name            = var.name
   log_group_name  = var.log_group_name
   filter_pattern  = var.filter_pattern
