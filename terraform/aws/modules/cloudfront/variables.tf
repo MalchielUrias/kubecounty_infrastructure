@@ -29,6 +29,7 @@ variable "bucket_regional_domain_name" {
 
 variable "function_arn" {
   type = string
+  default     = null
 }
 
 variable "function_event_type" {
