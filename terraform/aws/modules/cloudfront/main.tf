@@ -35,17 +35,19 @@ resource "aws_cloudfront_distribution" "site" {
       }
     }
 
+    # CloudFront Function for URL rewriting (when NO auth)
     dynamic "function_association" {
-      for_each = var.function_arn != null ? [1] : []
+      for_each = !var.enable_lambda_association && var.function_arn != null ? [1] : []
       
       content {
-        event_type   = var.function_event_type
+        event_type   = "viewer-request"
         function_arn = var.function_arn
       }
     }
 
+    # Lambda@Edge for URL rewriting + auth (when auth enabled)
     dynamic "lambda_function_association" {
-      for_each = var.enable_lambda_association ? [1] : []
+      for_each = var.enable_lambda_association && var.lambda_arn != "" ? [1] : []
       
       content {
         event_type   = "viewer-request"
