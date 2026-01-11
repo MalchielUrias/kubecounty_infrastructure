@@ -43,3 +43,15 @@ variable "vpc_endpoint_security_group_ids" {
   type        = list(string)
   default     = []
 }
+
+variable "create_nat_gateway" {
+  description = "Whether to create a NAT Gateway for private subnets"
+  type        = bool
+  default     = false
+}
+
+variable "nat_eip_allocation_id" {
+  description = "Optional pre-allocated Elastic IP allocation ID for NAT Gateway"
+  type        = string
+  default     = ""
+}

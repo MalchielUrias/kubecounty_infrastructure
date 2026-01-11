@@ -58,6 +58,17 @@ resource "aws_route_table" "priv" {
   for_each =  local.priv_subnet_cidr
   vpc_id = aws_vpc.this.id
 
+  # IPv4 route to NAT Gateway (optional)
+  dynamic "route" {
+    for_each = var.create_nat_gateway ? [1] : []
+    content {
+      cidr_block     = "0.0.0.0/0"
+      nat_gateway_id = aws_nat_gateway.this[0].id
+    }
+  }
+
+  # IPv6 egress-only route
+
   dynamic "route" {
     for_each = var.ipv6_enabled ? [1] : []
     content {
@@ -117,6 +128,23 @@ resource "aws_vpc_endpoint" "this" {
     Name = "${var.name}-${each.value}-endpoint"
   })
 }
+
+# Optional NAT Gateway
+resource "aws_eip" "nat" {
+  count = var.create_nat_gateway && var.nat_eip_allocation_id == "" ? 1 : 0
+  domain   = "vpc"
+}
+
+resource "aws_nat_gateway" "this" {
+  count         = var.create_nat_gateway ? 1 : 0
+  allocation_id = var.nat_eip_allocation_id != "" ? var.nat_eip_allocation_id : aws_eip.nat[0].id
+  subnet_id     = aws_subnet.pub_subnet[0].id  
+
+  tags = {
+    Name = "${var.name}-nat-gateway"
+  }
+}
+
 
 # ======= RT Association =======
 resource "aws_route_table_association" "priv" {
