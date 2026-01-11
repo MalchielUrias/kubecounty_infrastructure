@@ -3,6 +3,8 @@ data "aws_availability_zones" "available" {
   state = "available"
 }
 
+data "aws_region" "current" {}
+
 # Setup Locals
 locals {
   priv_subnet_cidr = { for i, v in var.priv_subnet_cidrs : i => v }
@@ -98,6 +100,22 @@ resource "aws_internet_gateway" "this" {
   tags = {
     Name = "${var.name}-igw"
   }
+}
+
+# VPC Endpoint
+resource "aws_vpc_endpoint" "this" {
+  for_each = toset(var.vpc_endpoint_services)
+
+  vpc_id              = aws_vpc.this.id
+  service_name        = "com.amazonaws.${data.aws_region.current.name}.${each.value}"
+  vpc_endpoint_type   = "Interface"
+  subnet_ids          = [for s in aws_subnet.priv_subnet : s.id]
+  security_group_ids  = length(var.vpc_endpoint_security_group_ids) > 0 ? var.vpc_endpoint_security_group_ids : null
+  private_dns_enabled = true
+
+  tags = merge(var.tags, {
+    Name = "${var.name}-${each.value}-endpoint"
+  })
 }
 
 # ======= RT Association =======
